@@ -1,3 +1,8 @@
 .products_list {
-    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+}
+
+.products_list .card {
+    margin: 5px;
 }
