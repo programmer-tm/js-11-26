@@ -1,10 +1,11 @@
 let products = [], goods = [], i = -1, x = 0;
 
-function addProduct(arr, title, price, quantity) {
+function addProduct(arr, title, price, quantity, quantityMax=0) {
     function product(title, price, quantity) {
         this.title = title;
         this.price = price;
         this.quantity = quantity;
+        this.quantityMax= quantityMax;
     }
     arr.push(new product(title, price, quantity));
 }
@@ -20,18 +21,22 @@ const renderGoodsItem = (title, price, quantity) => {
     `;
 }
 
+function checkValue(value,i){
+    if (value>goods[i].quantityMax){
+        alert("Превышено количество!");
+    } else {
+        goods[i].quantity = value;
+        getTable(goods);
+    }
+}
+
 function getTable(tableArr) {
     let table;
     if (tableArr == "") {
         document.querySelector("table").remove();
     } else {
-        if (x != 0) {
-            x = 0
-            alert(x);
+        if (document.querySelector("table") !== null){
             document.querySelector("table").remove();
-        } else {
-            alert(x);
-            x = 1;
         }
         table = document.createElement("table");
         let tr, td, n, i, y, itog = 0;
@@ -58,8 +63,7 @@ function getTable(tableArr) {
                     } else if (i == 2) {
                         td.innerText = goods[(n - 1)].price;
                     } else if (i == 3) {
-                        //x = goods[(n - 1)].qM;
-                        kolvo = '<input type="number" class="'+(n-1)+'" placeholder="' + goods[(n - 1)].quantity + '"></input>';
+                        kolvo = '<input type="number" class="'+(n-1)+'" onchange="checkValue(value, '+(n - 1)+');" placeholder="' + goods[(n - 1)].quantity + '"></input>';
                         td.innerHTML = kolvo;
                     } else if (i == 4) {
                         td.innerText = (goods[(n - 1)].price * goods[(n - 1)].quantity);
@@ -98,8 +102,7 @@ function openCart(i) {
     } else if (document.getElementById(i).value < 0) {
         alert("Так не пойдет...");
     } else {
-        addProduct(goods, products[i].title, products[i].price, document.getElementById(i).value);
-        console.log(goods);
+        addProduct(goods, products[i].title, products[i].price, document.getElementById(i).value, products[i].quantity);
         getTable(goods);
     }
 }
