@@ -153,49 +153,61 @@ class Hamburger {
     calories = 0;
 
     constructor() {
-        let size = +prompt(`Выберите размер гамбургера, 1 - маленький, 2 - большой`);
-        if (size === 1) {
-            this.size = this.chooseSize(1);
-        } else if (size === 2) {
-            this.size = this.chooseSize(2);
-        } else {
-            alert('Неправильный размер, на выбор варианты 1 и 2');
-            size = +prompt(`Выберите размер гамбургера, 1 - маленький, 2 - большой`);
+        while (true) {
+            let size = +prompt(`Выберите размер гамбургера, 1 - маленький, 2 - большой`);
+            if (size === 1) {
+                this.size = this.chooseSize(1);
+                break
+            } else if (size === 2) {
+                this.size = this.chooseSize(2);
+                break
+            } else {
+                alert('Неправильный размер, на выбор варианты 1 и 2');
+            }
         }
 
 
-        let filling = +prompt(`Выберите начинку гамбургера, 1 - сыр, 2 - салат, 3 - картофель`);
-        if (filling === 1) {
-            this.filling = this.chooseFilling(1);
-        } else if (filling === 2) {
-            this.filling = this.chooseFilling(2);
-        } else if (filling === 3) {
-            this.filling = this.chooseFilling(3);
-        } else {
-            alert('Неправильная начинка, на выбор варианты 1, 2 и 3');
-            filling = +prompt(`Выберите начинку гамбургера, 1 - сыр, 2 - салат, 3 - картофель`);
+        while (true) {
+            let filling = +prompt(`Выберите начинку гамбургера, 1 - сыр, 2 - салат, 3 - картофель`);
+            if (filling === 1) {
+                this.filling = this.chooseFilling(1);
+                break;
+            } else if (filling === 2) {
+                this.filling = this.chooseFilling(2);
+                break;
+            } else if (filling === 3) {
+                this.filling = this.chooseFilling(3);
+                break;
+            } else {
+                alert('Неправильная начинка, на выбор варианты 1, 2 и 3');
+            }
+        }
+
+        while (true) {
+            let spice = +prompt('Посыпать гамбургер специями? 1 - да, 2 - нет');
+            if (spice === 1) {
+                this.isSpiced = this.chooseSpice(1);
+                break;
+            } else if (spice === 2) {
+                this.isSpiced = this.chooseSpice(2);
+                break;
+            } else {
+                alert('Неправильный выбор, варианты 1 и 2');
+            }
         }
 
 
-        let spice = +prompt('Посыпать гамбургер специями? 1 - да, 2 - нет');
-        if (spice === 1) {
-            this.isSpiced = this.chooseSpice(1);
-        } else if (spice === 2) {
-            this.isSpiced = this.chooseSpice(2);
-        } else {
-            alert('Неправильный выбор, варианты 1 и 2');
-            spice = +prompt('Посыпать гамбургер специями? 1 - да, 2 - нет');
-        }
-
-
-        let sauce = +prompt('Полить гамбургер соусом? 1 - да, 2 - нет');
-        if (sauce === 1) {
-            this.isWithSauce = this.chooseSauce(1);
-        } else if (sauce === 2) {
-            this.isWithSauce = this.chooseSauce(2);
-        } else {
-            alert('Неправильный выбор, варианты 1 и 2');
-            sauce = +prompt('Полить гамбургер соусом? 1 - да, 2 - нет');
+        while (true) {
+            let sauce = +prompt('Полить гамбургер соусом? 1 - да, 2 - нет');
+            if (sauce === 1) {
+                this.isWithSauce = this.chooseSauce(1);
+                break;
+            } else if (sauce === 2) {
+                this.isWithSauce = this.chooseSauce(2);
+                break;
+            } else {
+                alert('Неправильный выбор, варианты 1 и 2');
+            }
         }
 
         alert(`Вы купили ${this.size} гамбургер, начинка ${this.filling}, ${this.isSpiced ? 'со специями' : ''} ${this.isWithSauce ? 'с соусом' : ''}. 
