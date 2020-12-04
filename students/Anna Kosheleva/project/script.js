@@ -40,7 +40,7 @@
             this.goods.forEach(item => {
                 total += item.price;
             });
-            
+
             console.log(total);
             return total;
         }
@@ -122,6 +122,7 @@
 
         }
     }
+    
 
     const basket = new Basket();
     const goodsList = new GoodsList(basket);
