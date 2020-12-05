@@ -6,22 +6,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-Shop</title>
     <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700&display=swap&subset=cyrillic" rel="stylesheet"> -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.10/dist/css/uikit.min.css" />
 
 </head>
 
-<body>
-    <header>
-        <span class="logo">E-Shop</span>
-        <button type="button" class="cart-button uk-button uk-button-primary uk-button-small">Корзина</button>
-    </header>
+<body class="fullsect">
+    <section class="mainsect">
+        <header class="container">
+
+            <div id="topbox">
+                <div id="top-logo">
+                    <!-- -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="82" height="58" viewBox="0 0 82 58">
+                        <circle fill="#d5d5d5" cx="49.7" cy="19.3" r="3.2"></circle>
+                        <circle fill="#d5d5d5" cx="30.3" cy="19.3" r="3.2"></circle>
+                        <circle fill="none" stroke="#d5d5d5" stroke-width="3" cx="40" cy="29" r="27.5"></circle>
+                        <path fill="none" stroke="#d5d5d5" stroke-width="3"
+                            d="M54.9 33.5a15.4 15.4 0 0 1-14.9 10 15.5 15.5 0 0 1-14.9-10"></path>
+                    </svg>
+                    <!-- -->
+                </div>
+                <div id="company-name" class="logo-company">E-Shop</div>
+                <!-- <span class="logo">E-Shop</span> -->
+                <nav id="top-menu">
+                    <a class="menu-items" href="/">Главная</a>
+                    <a class="menu-items" href="related-products.html">Каталог</a>
+                    <div class="menu-items">
+                        <button type="button"
+                            class="cart-button uk-button uk-button-primary uk-button-small">Корзина</button>
+                    </div>
+                </nav>
+            </div>
+            <!--  -->
+        </header>
+    </section>
+    <!--  -->
+    <section id='promo'>
+        <!-- TODO -->
+    </section>
+    <!--  -->
+    <section class="gap-50"></section>
+    <!--  -->
     <main>
         <section class="goods">
         </section>
     </main>
-    <script src="script.js" defer></script>
+    <!--  -->
+    <section class="gap-50"></section>
+    <!--  -->
+
+    <footer class="mainsect widecontent">
+        <div id="footer-box" class="center">
+            <div id="contacts">
+                <div class="contactWrap">
+                    <img src="images/envelope.svg" class="contactIcon">
+                    info@myshop.ru
+                </div>
+                <div class="contactWrap">
+                    <img src="images/phone-call.svg" class="contactIcon">
+                    8 800 555 00 00
+                </div>
+                <div class="contactWrap">
+                    <img src="images/placeholder.svg" class="contactIcon">
+                    С-Петербург, Мебельная, 1, оф. 101
+                </div>
+            </div>
+
+            <div id="footerNav">
+                <a href="/">Главная</a>
+                <a href="related-products.html">Каталог</a>
+            </div>
+        </div>
+    </footer>
+    <script src="scripts/script.js" defer></script>
     <!-- UIkit JS -->
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.10/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.10/dist/js/uikit-icons.min.js"></script>
