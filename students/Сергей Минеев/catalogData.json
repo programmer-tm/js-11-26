@@ -52,5 +52,11 @@
 "price":900,
 "quantity":9,
 "quantityMax":0
+},
+  {
+"title":"Продукт 10",
+"price":1000,
+"quantity":10,
+"quantityMax":0
 }
 ]
