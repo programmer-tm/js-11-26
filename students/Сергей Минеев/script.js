@@ -112,12 +112,42 @@ let renderProducts = (list) => {
 }
 
 //Генерируем список товаров, запускаем вывод списка товаров...
-addProduct(products, "Продукт 1", 100, 1);
+/*addProduct(products, "Продукт 1", 100, 1);
 addProduct(products, "Продукт 2", 200, 2);
 addProduct(products, "Продукт 3", 300, 3);
 addProduct(products, "Продукт 4", 400, 4);
 addProduct(products, "Продукт 5", 500, 5);
 addProduct(products, "Продукт 6", 600, 6);
 addProduct(products, "Продукт 7", 700, 7);
-addProduct(products, "Продукт 8", 800, 8);
+addProduct(products, "Продукт 8", 800, 8);*/
+const API = 'https://raw.githubusercontent.com/programmer-tm/js-11-26/master/students/%D0%A1%D0%B5%D1%80%D0%B3%D0%B5%D0%B9%20%D0%9C%D0%B8%D0%BD%D0%B5%D0%B5%D0%B2';
+
+const getData = () => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.timeout = 10000;
+
+    xhr.ontimeout = () => {
+        console.log('timeout!');
+    }
+
+    xhr.onreadystatechange = () => {
+        console.log('ready state change', xhr.readyState);
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                console.log(JSON.parse(xhr.responseText));
+            } else {
+                console.log('Error!', xhr.responseText);
+            }
+        }
+    }
+
+    xhr.open('GET', `${API}/catalogData.json`);
+
+    // xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.send();
+}
+
+getData(API);
 renderProducts(products);
