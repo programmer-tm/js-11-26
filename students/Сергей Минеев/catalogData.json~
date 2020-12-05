@@ -1,0 +1,14 @@
+[
+{
+"title" = "Продукт 1";
+"price" = 100;
+"quantity" = 1;
+"quantityMax"= 0;
+},
+{
+"title" = "Продукт 2";
+"price" = 200;
+"quantity" = 2;
+"quantityMax"= 0;
+},
+]
