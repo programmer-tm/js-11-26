@@ -59,11 +59,10 @@ class GoodsList {
     }
     sum (){
         let sum = 0;
-        const goodsList = this.goods.map(item => {
-            const goodsItem = new GoodsItem(item);
-            return sum+= goodsItem.price;
+        this.goods.map(item => {
+            return sum += item.price;
         });
-        document.querySelector('.goods').append("Итого " + sum) ;
+        document.querySelector('.goods').append("Итоговая сумма : " + sum) ;
     }
     
 }
