@@ -6,18 +6,21 @@
             "product_id": 1,
             "title": "Alphazone - Rockin'",
             "price": 8,
+            "quantity": 1,
             "cover": "static/images/alphazone-rockin.jpg"
         },
         {
             "product_id": 2,
             "title": "Mayhem - Distorted Soul",
             "price": 6,
+            "quantity": 1,
             "cover": "static/images/mayhem-distorted_soul.jpg"
         },
         {
             "product_id": 3,
             "title": "Marcos & J K Walker - DayKeeper",
             "price": 10,
+            "quantity": 1,
             "cover": "static/images/marcos_jk_walker-daykeeper.jpg"
         }
     ]
