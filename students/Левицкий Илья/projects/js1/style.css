@@ -10,15 +10,10 @@
 header {
   border: 3px solid #b92121;
   background-color: aliceblue;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
   height: 50px;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 header button {
@@ -35,15 +30,10 @@ header span {
 }
 
 .goods {
-  -ms-flex-line-pack: center;
-      align-content: center;
-  display: -ms-grid;
+  align-content: center;
   display: grid;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -ms-grid-columns: (minmax(150px, 20%))[auto-fill];
-      grid-template-columns: repeat(auto-fill, minmax(150px, 20%));
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 20%));
   gap: 32px;
   min-height: 100vh;
 }
@@ -52,16 +42,9 @@ header span {
   border: 3px solid #881919;
   border-radius: 15px;
   width: 200px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  flex-direction: column;
+  align-items: center;
   background-color: aliceblue;
 }
 

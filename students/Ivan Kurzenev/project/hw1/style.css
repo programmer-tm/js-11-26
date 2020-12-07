@@ -29,18 +29,11 @@ a {
 .header {
   background-color: white;
   border: 1px solid #ececec;
-  -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
-          box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.17);
   min-width: 640px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 16px;
   padding-bottom: 16px;
 }
@@ -60,7 +53,6 @@ a {
   background-color: lightslategray;
   border-radius: 30px;
   cursor: pointer;
-  -webkit-transition: all 0.15s;
   transition: all 0.15s;
 }
 
@@ -75,12 +67,8 @@ a {
 
 .goods {
   min-width: 640px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
 }
 
 .item {
