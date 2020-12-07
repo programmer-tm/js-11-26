@@ -1,0 +1,46 @@
+[{
+        "title": "Alphazone - Rockin'",
+        "price": 500,
+        "cover": "static/images/alphazone-rockin.jpg"
+    },
+    {
+        "title": "Mayhem - Distorted Soul",
+        "price": 400,
+        "cover": "static/images/mayhem-distorted_soul.jpg"
+    },
+    {
+        "title": "Marcos & J K Walker - DayKeeper",
+        "price": 600,
+        "cover": "static/images/marcos_jk_walker-daykeeper.jpg"
+    },
+    {
+        "title": "Planet Punk - Troja.wav",
+        "price": 400,
+        "cover": "static/images/planet_punk-trojawav.jpg"
+    },
+    {
+        "title": "Cominotto - Species",
+        "price": 300,
+        "cover": "static/images/cominotto-species.jpg"
+    },
+    {
+        "title": "DJ Destiny VS. Organ Donors - What's Up?",
+        "price": 350,
+        "cover": "static/images/dj_destiny_organ_donors-whats_up.jpg"
+    },
+    {
+        "title": "JS Ten - Nature",
+        "price": 600,
+        "cover":"static/images/js_ten-nature.jpg"
+    },
+    {
+        "title": "Radium VS. DJ Inside - Universe Of Dreams",
+        "price": 400,
+        "cover": "static/images/radium_vs_dj_inside-universe_of_dreams.jpg"
+    },
+    {
+        "title": "Joe Kelly - What's Happening / Arora",
+        "price": 550,
+        "cover": "static/images/joe_kelly-whats_happening_arora.jpg"
+    }
+]
