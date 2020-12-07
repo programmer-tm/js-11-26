@@ -4,13 +4,13 @@ const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-a
 const sendRequest = (path) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-
+  
     xhr.timeout = 10000;
-
+  
     xhr.ontimeout = () => {
       console.log('timeout!');
     }
-
+  
     xhr.onreadystatechange = () => {
       // console.log('ready state change', xhr.readyState);
       if (xhr.readyState === 4) {
@@ -22,11 +22,11 @@ const sendRequest = (path) => {
         }
       }
     }
-
+  
     xhr.open('GET', `${API}/${path}`);
-
+  
     // xhr.setRequestHeader('Content-Type', 'application/json');
-
+  
     xhr.send();
   });
 }
@@ -52,7 +52,6 @@ class GoodsItem {
 class GoodsList {
   constructor(basket) {
     this.goods = [];
-    this.filteredGoods = [];
     this.basket = basket;
 
     document.querySelector('.goods').addEventListener('click', (event) => {
@@ -66,15 +65,6 @@ class GoodsList {
         }
       }
     });
-
-    document.querySelector('.search').addEventListener('input', (event) => {
-      this.search(event.target.value);
-    });
-
-    // document.querySelector('.search').addEventListener('keydown', (event) => {
-    //   console.log(event);
-    //   this.search(event.target.value);
-    // });
   }
 
   fetchData() {
@@ -82,7 +72,6 @@ class GoodsList {
       sendRequest('catalogData.json')
         .then((data) => {
           this.goods = data;
-          this.filteredGoods = data;
           resolve();
         });
     });
@@ -112,17 +101,11 @@ class GoodsList {
   }
 
   render() {
-    const goodsList = this.filteredGoods.map(item => {
+    const goodsList = this.goods.map(item => {
       const goodsItem = new GoodsItem(item);
       return goodsItem.render();
     });
     document.querySelector('.goods').innerHTML = goodsList.join('');
-  }
-
-  search(value) {
-    const regexp = new RegExp(value.trim(), 'i');
-    this.filteredGoods = this.goods.filter((goodsItem) => regexp.test(goodsItem.product_name));
-    this.render();
   }
 }
 
@@ -134,16 +117,10 @@ class Basket {
   }
 
   addItem(item) {
-    const index = this.basketGoods.findIndex((basketItem) => basketItem.id_product === item.id_product);
-    if (index > -1) {
-      this.basketGoods[index].quantity += 1;
-      // this.basketGoods[index] = { ...this.basketGoods[index], quantity: this.basketGoods[index].quantity + 1 };
-    } else {
-      this.basketGoods.push(item);
-    }
+    this.basketGoods.push(item);
     console.log(this.basketGoods);
   }
-
+  
   removeItem(id) {
     this.basketGoods = this.basketGoods.filter((goodsItem) => goodsItem.id_product !== parseInt(id));
     console.log(this.basketGoods);
