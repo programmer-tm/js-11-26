@@ -33,6 +33,12 @@ class GoodsItem {
     addToBasket(item) {
       this.basket.add(item);
     }
+
+    getTotalPrice() {
+      return this.goods.reduce((acc, curVal) => {
+        return acc + curVal.price;
+      }, 0);
+    }
   
     render() {
       const goodsList = this.goods.map(item => {
@@ -48,18 +54,67 @@ class GoodsItem {
       this.basketGoods = [];
     }
   
-    render() {
   
-    }
+
+  addItem() {
+
   }
+
+  removeItem() {
+
+  }
+
+  changeQuantity() {
+
+  }
+
+  clear() {
+
+  }
+
+  fetchData() {
+
+  }
+
+  applyPromoCode() {
+
+  }
+
+  getDeliveryPrice() {
+
+  }
+
+  createOrder() {
+
+  }
+
+  getTotalPrice() {
+
+  }
+
+  render() {
+
+  }
+
+}
   
   class BasketItem {
     constructor({ title }) {
       this.title = title;
     }
+
+    changeQuantity() {
+
+    }
+  
+    removeItem() {
+    }
+  
+    changeType() {
+    }
   
     render() {
-      
+  
     }
   }
   
@@ -67,3 +122,4 @@ class GoodsItem {
   const goodsList = new GoodsList(basket);
   goodsList.fetchData();
   goodsList.render();
+  goodsList.getTotalPrice();
