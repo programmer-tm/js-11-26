@@ -59,3 +59,7 @@ header {
     border-radius: 5px;
     padding: 10px;
 }
+
+button.center {
+    text-align: center;
+}
