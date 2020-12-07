@@ -2,10 +2,12 @@
 
 class Products {
     constructor({
+        product_id,
         title,
         price,
         cover
     }) {
+        this.product_id = product_id;
         this.title = title;
         this.price = price;
         this.cover = cover;
@@ -13,10 +15,10 @@ class Products {
 
     renderProduct() {
         return `<div class="card" style="width: 18rem;">
-        <img src="${this.cover}" class="card-img-top" alt="${this.title}">
+        <img src="${this.cover}" class="card-img-top" alt="${this.product_id}">
         <div class="card-body">
             <h5 class="card-title">${this.title}</h5>
-            <p class="card-text">Record price: ${this.price}</p>
+            <p class="card-text">Record price: $${this.price}</p>
             <a href="#" class="btn btn-primary"><i class="fas fa-cart-plus"></i> Add to cart</a>
         </div>
     </div>`;
