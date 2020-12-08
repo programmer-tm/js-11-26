@@ -51,7 +51,7 @@ class GoodsList {
     this.basket = basket;
   }
 
-  fetchData(callback) {
+  fetchData() {
     sendRequest('catalogData.json', (data) => {
       this.goods = data;
       callback();
