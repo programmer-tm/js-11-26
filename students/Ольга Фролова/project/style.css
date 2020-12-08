@@ -51,6 +51,19 @@ a {
     font-size: 18px;
 }
 
+.cart {
+    margin-top: 100px;
+    margin-left: 100px;
+}
+
+.cart>p {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    padding: 20px;
+    border: 1px solid grey;
+}
+
 main {
     clear: both;
 
