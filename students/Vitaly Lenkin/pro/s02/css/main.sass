@@ -64,12 +64,12 @@ $breakpoint-mobile: '(max-width: 575px)'
    margin: 0
    padding: 0
    box-sizing: border-box
+   a, button
+      text-decoration: none
+      &:hoover
+         text-decoration: none
 body
    font-family: $fontlato
-a, button
-   text-decoration: none
-   &:hoover
-      text-decoration: none
 .clearfix:after
    content: ''
    display: table
@@ -146,7 +146,6 @@ $bg-top-hover: #5e5e5e
       svg
          width: auto
          height: $h-top - 8px
-         //float: left
          max-height: $h-top
          stroke-width: 4px
          //justify-content: space-between
@@ -179,15 +178,27 @@ $bg-top-hover: #5e5e5e
       a
          display: block
          font-family: "Open Sans", sans-serif
-         color: #fff
+         //color: #fff
+         color: $logo-color
          text-decoration: none
          height: $h-top
          line-height: $h-top
          &:hover, &:focus, &:active
             background: $bg-top-hover
+            color: #f16d7f
       .menu-items
          padding: 0 20px
+         color: $logo-color
          border-left: $brd-top-menu
+         display: flex
+         height: 40px
+         line-height: 40px
+         align-items: center
+         cursor: pointer
+         &:hover, &:focus, &:active
+            background: $bg-top-hover
+            a
+               color: $primary
          &:last-child
             border-right: $brd-top-menu
 //... FOOTER 
