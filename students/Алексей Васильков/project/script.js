@@ -140,7 +140,7 @@ class Cart {
             makeGETRequest('getCart.json')
                 .then((data) => {
                     this.cartGoods = data.contents;
-                    this.amount = data.amount;
+                    this.amount = data.totalPrice;
                     this.countGoods = data.countGoods;
                     console.log(this);
                     resolve();
