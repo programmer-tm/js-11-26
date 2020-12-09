@@ -1,7 +1,3 @@
-.main-header {
-    .cart-button {}
-}
-
 .main-content {
     .goods-list {
         display: flex;
@@ -9,10 +5,16 @@
         align-items: center;
         max-width: 85%;
         margin: 0 auto;
-        .item-preview {
-            width: 100%;
-            height: 150px;
-            background-color: #eeeeee;
+        .card {
+            &:hover {
+                transform: scale(1.05);
+                transition: 0.5s;
+            }
+            .item-preview {
+                width: 100%;
+                height: 150px;
+                background-color: #eeeeee;
+            }
         }
     }
 }
