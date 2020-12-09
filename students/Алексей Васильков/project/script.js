@@ -3,9 +3,9 @@
 // 1. Переделайте makeGETRequest() так, чтобы она использовала промисы.
 // 2. Добавьте в соответствующие классы методы добавления товара в корзину, удаления товара из корзины и получения списка товаров корзины.
 
-const API_URL = 'https://raw.githubusercontent.com/Dragon-program-sib/js-11-26/b1a82e65ae9e7f55ac17f6cf010531076b91ec3a/students/%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9%20%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2/project/data.json';
+const API_URL = 'https://raw.githubusercontent.com/Dragon-program-sib/js-11-26/master/students/%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9%20%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2/project/json/';
 
-const makeGETRequest = (path) => {
+const makeGETRequest = (filename) => {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
 
@@ -26,7 +26,7 @@ const makeGETRequest = (path) => {
             }
         }
 
-        xhr.open('GET', `${API}/${path}`);
+        xhr.open('GET', `${API_URL}/${filename}`);
         xhr.send();
     });
 }
@@ -78,7 +78,7 @@ class GoodsList {
     }
 
     newFetchData(callback) {
-        fetch(`${API}/catalogData.json`)
+        fetch(`${API_URL}/catalogData.json`)
             .then((response) => {
                 console.log(response);
                 return response.json();
