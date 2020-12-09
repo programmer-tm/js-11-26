@@ -33,10 +33,10 @@ const makeGETRequest = (path) => {
 };
 
 class GoodsItem {
-    constructor({id_product, image, product_name, price}) {
+    constructor({id_product, image, title, price}) {
         this.id = id_product;
         this.image = image;
-        this.title = product_name;
+        this.title = title;
         this.price = price;
     }
 
@@ -70,12 +70,14 @@ class GoodsList {
         });
     }
 
-    fetchData(callback) {
-        makeGETRequest('catalogData.json')
-            .then((data) => {
-                this.goods = data;
-                callback();
-            });
+    fetchData() {
+        return new Promise((resolve, reject) => {
+            makeGETRequest('catalogData.json')
+                .then((data) => {
+                    this.goods = data;
+                    resolve();
+                });
+        });
     }
 
     newFetchData(callback) {
@@ -92,7 +94,7 @@ class GoodsList {
     }
 
     addToCart(item) {
-        this.cart.add(item);
+        this.cart.addItem(item);
     }
 
     getTotalPrice() {
@@ -191,8 +193,8 @@ class CartItem {
 const cart = new Cart();
 cart.fetchData();
 const goodsList = new GoodsList(cart);
-goodsList.fetchData(() => {
+goodsList.fetchData()
+    .then(() => {
     goodsList.render();
     goodsList.getTotalPrice();
-    goodsList.addToCart(goodsList.goods[0]);
-});
+    });
