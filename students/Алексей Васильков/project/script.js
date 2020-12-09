@@ -115,7 +115,7 @@ class GoodsList {
 class Cart {
     constructor() {
         this.cartGoods = [null];
-        this.amount = 0;
+        this.totalPrice = 0;
         this.countGoods = 0;
 }
 
@@ -143,7 +143,7 @@ class Cart {
             makeGETRequest('getCart.json')
                 .then((data) => {
                     this.cartGoods = data.contents;
-                    this.amount = data.totalPrice;
+                    this.totalPrice = data.totalPrice;
                     this.countGoods = data.countGoods;
                     console.log(this);
                     resolve();
