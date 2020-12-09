@@ -2,14 +2,15 @@
 
 // 1. Переделайте makeGETRequest() так, чтобы она использовала промисы.
 // 2. Добавьте в соответствующие классы методы добавления товара в корзину, удаления товара из корзины и получения списка товаров корзины.
+// 3.* Переделайте GoodsList так, чтобы fetchGoods() возвращал промис, а render() вызывался в обработчике этого промиса.
 
 const API_URL = 'https://raw.githubusercontent.com/Dragon-program-sib/js-11-26/master/students/%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9%20%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2/project/json/';
 
-const makeGETRequest = (filename) => {
+const makeGETRequest = (path) => {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
 
-        xhr.timeout = 10000;
+        xhr.timeout = 5000;
 
         xhr.ontimeout = () => {
             console.log('Timeout!');
@@ -26,13 +27,13 @@ const makeGETRequest = (filename) => {
             }
         }
 
-        xhr.open('GET', `${API_URL}/${filename}`);
+        xhr.open('GET', `${API_URL}/${path}`);
         xhr.send();
     });
-}
+};
 
 class GoodsItem {
-    constructor({id_product, image, product_name, price, }) {
+    constructor({id_product, image, product_name, price}) {
         this.id = id_product;
         this.image = image;
         this.title = product_name;
@@ -190,9 +191,8 @@ class CartItem {
 const cart = new Cart();
 cart.fetchData();
 const goodsList = new GoodsList(cart);
-goodsList.fetchData()
-    .then(() => {
-        goodsList.render();
-        goodsList.getTotalPrice();
-        goodsList.addToCart(goodsList.goods[0]);
-    });
+goodsList.fetchData(() => {
+    goodsList.render();
+    goodsList.getTotalPrice();
+    goodsList.addToCart(goodsList.goods[0]);
+});
