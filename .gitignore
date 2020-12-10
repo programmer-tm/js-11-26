@@ -5,13 +5,11 @@ logs
 npm-debug.log*
 
 .vscode
+
 .idea
 
 .idea/*
 
-students/*
-
-!students/Андрей Любарский
 
 project
 
