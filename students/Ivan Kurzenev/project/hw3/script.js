@@ -42,6 +42,7 @@ class GoodsItem {
       <h4 class="item__title marginTop">${this.title}</h4>
       <p class="item__price marginTop">Цена: ${this.price} &#8381;</p>
       <button type="button" class="item__buy-button marginTop" name="add-to-basket">В корзину</button>
+      <button type="button" class="item__buy-button marginTop" name="remove-from-basket">Удалить</button>
     </div>`;
 }
 
@@ -60,14 +61,17 @@ class GoodsList {
         } else {
           console.error (`Element not found! Id: ${id}`);
         }
+      } else if (event.target.name === 'remove-from-basket') {
+        const id = event.target.parentElement.dataset.id;
+        this.deleteFromCart(id);
       }
     });
 
-    document.querySelector('.remove-button').addEventListener('click', (event) => {
-      if( event.target.name === 'remove-from-basket') {
-        this.deleteFromCart();
-      }
-    });
+    // document.querySelector('.remove-button').addEventListener('click', (event) => {
+    //   if( event.target.name === 'remove-from-basket') {
+    //     this.deleteFromCart();
+    //   }
+    // });
 
     document.querySelector('.clear-cart').addEventListener('click', (event) => {
       if( event.target.name === 'clear-cart') {
@@ -93,8 +97,8 @@ class GoodsList {
     this.cart.addItem(item);
   }
 
-  deleteFromCart() {
-    this.cart.deleteItem();
+  deleteFromCart(id) {
+    this.cart.deleteItem(id);
   }
 
   clearCart() {
@@ -124,8 +128,16 @@ class Cart {
     console.log(this.cartGoods);
   }
 
-  deleteItem() {
-    this.cartGoods.pop();
+  deleteItem(id) {
+    let index = 0;
+    for (let good of this.cartGoods) {
+      if (good.id_product === +id) {
+        break;
+      }
+      index++;
+    }
+
+    this.cartGoods.splice(index, 1);
     console.log(this.cartGoods);
   }
 
