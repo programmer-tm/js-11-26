@@ -1,0 +1,34 @@
+{
+    "totalPrice": 97000,
+    "countGoods": 4,
+    "contents": [
+        {
+            "id_product": 1,
+            "image": "nout.jpg",
+            "title": "Ноутбук",
+            "price": 60000,
+            "quantity": 1
+        },
+        {
+            "id_product": 2,
+            "image": "keyboard.jpg",
+            "title": "Клавиатура",
+            "price": 5000,
+            "quantity": 1
+        },
+        {
+            "id_product": 3,
+            "image": "mouse.jpg",
+            "title": "Мышь",
+            "price": 2000,
+            "quantity": 1
+        },
+        {
+            "id_product": 4,
+            "image": "monitor.jpg",
+            "title": "Монитор",
+            "price": 30000,
+            "quantity": 1
+        }
+    ]
+}
