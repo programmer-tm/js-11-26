@@ -89,7 +89,7 @@ class ProductsList {
     }
 
     filterProducts(value) {
-        const regularExpression = new RegExp(value, 'i');
+        const regularExpression = new RegExp(value.trim(), 'i');
         this.filteredProducts = this.products.filter(product => regularExpression.test(product.title));
         this.renderProductsList();
     }
