@@ -1,5 +1,5 @@
-// +7(000)000-0000
-// const name = document.querySelector('#name');
+"use strict"
+
 const validate = () => {
     const
         nameReg = /^[aA-zZаА-яЯёЁ]+$/g,
