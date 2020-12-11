@@ -54,6 +54,7 @@ class GoodsList {
     this.goods = [];
     this.filteredGoods = [];
     this.basket = basket;
+    
 
     document.querySelector('.goods').addEventListener('click', (event) => {
       if (event.target.name === 'add-to-basket') {
@@ -88,18 +89,18 @@ class GoodsList {
     });
   }
 
-  newFetchData(callback) {
-    fetch(`${API}/catalogData.json`)
-      .then((response) => {
-        console.log(response);
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        this.goods = data;
-        callback();
-      });
-  }
+//  newFetchData(callback) {
+//    fetch(`${API}/catalogData.json`)
+//      .then((response) => {
+//        console.log(response);
+//        return response.json();
+//      })
+//      .then((data) => {
+//        console.log(data);
+//        this.goods = data;
+//        callback();
+//      });
+//  }
 
   addToBasket(item) {
     this.basket.addItem(item);
