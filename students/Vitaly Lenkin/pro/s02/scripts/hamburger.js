@@ -22,7 +22,7 @@ var hamburgerMenu = {
       standard: {name: 'с приправой', price: 15, calories: 0},
       mayonez: {name: 'с майонезом', price: 20, calories: 5}      
    }
-}
+};
 
 class CreateHamburger {
    constructor (size = '', stuffing = '', topping = '') {
@@ -42,27 +42,26 @@ class CreateHamburger {
    //... Инициализация формы ввода опций
    initForm() {
       //... Размещаем опции размера гамбургера
-      for ( var key in hamburgerMenu.size) {
-         var op = document.createElement('option');
-         // Add class
+      for ( let key in hamburgerMenu.size) {
+         let op = document.createElement('option');
          op.className = 'uk-option uk-text-meta sizeOpt';
-         op.value = key
+         op.value = key;
          op.appendChild(document.createTextNode(hamburgerMenu.size[key].name));
          sizeSel.appendChild(op);
       };
       //... Размещаем опции начинки гамбургера
-      for (var key in hamburgerMenu.stuffing) {
-         var op = document.createElement('option');
+      for (let key in hamburgerMenu.stuffing) {
+         let op = document.createElement('option');
          op.className = 'uk-option uk-text-meta stufOpt';
-         op.value = key
+         op.value = key;
          op.appendChild(document.createTextNode(hamburgerMenu.stuffing[key].name));
          stufSel.appendChild(op);
       };
       //... Размещаем опции заправки гамбургера
-      for (var key in hamburgerMenu.topping) {
-         var op = document.createElement('option');
+      for (let key in hamburgerMenu.topping) {
+         let op = document.createElement('option');
          op.className = 'uk-option uk-text-meta toppOpt';
-         op.value = key
+         op.value = key;
          op.appendChild(document.createTextNode(hamburgerMenu.topping[key].name));
          toppSel.appendChild(op);
       }
@@ -71,25 +70,25 @@ class CreateHamburger {
    createOne (e) {      
       e.preventDefault();       
       //... Читаем поля формы
-      var selectedSize = sizeSel.value;
-      var selectedStaf = stufSel.value;
-      var selectedTopp = toppSel.value;
+      let selectedSize = sizeSel.value;
+      let selectedStaf = stufSel.value;
+      let selectedTopp = toppSel.value;
                
       //... Создаем строку для гамбургера
-      var li = document.createElement('li');
+      let li = document.createElement('li');
 
       const gamb = new CreateHamburger (
          selectedSize, 
          selectedStaf, 
          selectedTopp 
-         // (selectedTopp == 'по желанию') ? '' : selectedTopp // проверяем, но нне здесь
+         // (selectedTopp == 'по желанию') ? '' : selectedTopp // проверяем, но не здесь
       );
       // li.className = 'uk-margin list-item';
       li.style = 'width: 100%; display: flex; flex-direction: row; align-items:center;';
       //... Всю сборку записываем в строку
       //li.appendChild(document.createTextNode(`
-      //... Можно прямо в эмлемент без лишней переменной. пока так
-      var liHTML = 
+      //... Можно прямо в элемент без лишней переменной... но пока так
+      let liHTML = 
       `
       <div style="width:30%">Гамбургер  <b>${hamburgerMenu.size[selectedSize].name.toUpperCase()}</b> </div>
       <div style="width:20%"> ${hamburgerMenu.stuffing[selectedStaf].name} </div>
@@ -99,32 +98,32 @@ class CreateHamburger {
       li.innerHTML = liHTML;
       
       //... Создаем кнопку для удаления строки
-      var deleteBtn = document.createElement('button');      
+      let deleteBtn = document.createElement('button');      
       deleteBtn.className = 'uk-button uk-button-danger uk-button-small uk-align-center-right uk-flex delete';      
       deleteBtn.appendChild(document.createTextNode('X'));
       // deleteBtn.appendChild(document.createTextNode('<span uk-icon="close"></span>'));
       li.appendChild(deleteBtn);
-      deleteBtn.addEventListener('click', gamb.removeItem)
+      deleteBtn.addEventListener('click', gamb.removeItem);
       itemList.appendChild(li);
    }
    //... Удаление строки по клику
-   removeItem(e){
-      if(e.target.classList.contains('delete')){
-        if(confirm('Точно удалять?')){
-          var li = e.target.parentElement;
-          itemList.removeChild(li);
-        }
+   removeItem(e) {
+      if (e.target.classList.contains('delete')) {
+         if (confirm('Точно удалять?')) {
+            var li = e.target.parentElement;
+            itemList.removeChild(li);
+         }
       }
-    }
+   }
 }
-//... Инициализируем пустой гамбургер, что получить доступ к форме
-const gamb = new CreateHamburger;
+//... Инициализируем пустой гамбургер, чтобы получить доступ к форме
+const gamb = new CreateHamburger();
 gamb.initForm();
 //... Вешаем обработчик на кнопку "создать"
 createHamb.addEventListener('click', gamb.createOne);
 // gamb.createOne();    // трейсер
 // console.log( gamb )  // трейсер
-//!item.forEach(addEventListener('click', gamb.removeItem)); // убрас в элементы
+//!item.forEach(addEventListener('click', gamb.removeItem)); // убрал в элементы
 
 // console.log ( gamb, gamb.totalPrice(), gamb.totalCalories() );
 

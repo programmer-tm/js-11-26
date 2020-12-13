@@ -40,15 +40,15 @@
                     </div>
 -->
                     <div class="menu-items">
-                        <a href="#" class="uk-icon" uk-icon="home"></a>                        
+                        <a href="#" class="uk-icon" uk-icon="home" title="Главная"></a>                        
                     </div>
                     <div class="menu-items">
-                        <a href="hamburger.html" class="uk-icon" uk-icon="menu"></a>                        
+                        <a href="hamburger.html" class="uk-icon" uk-icon="menu" title="Буфет"></a>                        
                     </div>
                     <div class="menu-items">
-                        <a href="#" class="uk-icon" uk-icon="user"></a>                        
+                        <a href="#modal-full-form" class="uk-icon" uk-icon="user" title="Личный кабинет" uk-toggle></a>                        
                     </div><div class="menu-items">
-                        <a href="#" class="uk-icon" uk-icon="cart"></a>                        
+                        <a href="#" class="uk-icon" uk-icon="cart" title="Корзина"></a>                        
 
                     </div>
                 </nav>
@@ -137,6 +137,37 @@
             </div>
         </div>
     </footer>
+    
+    <!-- Логин -->
+    <div id="modal-full-form" class="uk-modal-full" uk-modal>
+        <div class="uk-modal-dialog">
+            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+            <div data-uk-img="" data-src="images/promo.jpg"
+                class="uk-flex uk-flex-center uk-flex-middle uk-background-cover" uk-height-viewport>
+                <div class="uk-overlay-primary uk-position-cover"></div>
+                <div class="uk-overlay uk-position-center uk-light">
+                    <form>
+                        <div class="uk-margin">
+                            <div class="uk-inline">
+                                <span class="uk-form-icon" uk-icon="icon: user"></span>
+                                <input class="uk-input" type="text" placeholder="Логин">
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <div class="uk-inline">
+                                <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                <input class="uk-input" type="text" placeholder="Пароль">
+                            </div>
+                        </div>
+                        <div class="uk-margin">
+                            <button class="uk-button uk-button-default">Войти</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="scripts/script.js" defer></script>
     <!-- UIkit JS -->
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.10/dist/js/uikit.min.js"></script>
