@@ -1,9 +1,5 @@
 'use strict';
 
-// 1. Переделайте makeGETRequest() так, чтобы она использовала промисы.
-// 2. Добавьте в соответствующие классы методы добавления товара в корзину, удаления товара из корзины и получения списка товаров корзины.
-// 3.* Переделайте GoodsList так, чтобы fetchGoods() возвращал промис, а render() вызывался в обработчике этого промиса.
-
 const API_URL = 'https://raw.githubusercontent.com/Dragon-program-sib/js-11-26/master/students/%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9%20%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2/project/json/';
 
 const makeGETRequest = (path) => {
@@ -55,6 +51,7 @@ class GoodsItem {
 class GoodsList {
     constructor(cart) {
         this.goods = [null];
+        this.filteredGoods = [null];
         this.cart = cart;
 
         document.querySelector('.goods').addEventListener('click', (event) => {
@@ -68,6 +65,10 @@ class GoodsList {
                 }
             }
         });
+
+        document.querySelector('.search').addEventListener('input', (event) => {
+            this.search(event.target.value);
+        });
     }
 
     fetchData() {
@@ -75,6 +76,7 @@ class GoodsList {
             makeGETRequest('catalogData.json')
                 .then((data) => {
                     this.goods = data;
+                    this.filteredGoods = data;
                     resolve();
                 });
         });
@@ -104,11 +106,18 @@ class GoodsList {
     }
 
     render() {
-        const goodsList = this.goods.map(item => {
+        const goodsList = this.filteredGoods.map(item => {
             const goodsItem = new GoodsItem(item);
             return goodsItem.render();
         });
         document.querySelector('.goods').innerHTML = goodsList.join('');
+    }
+
+    search(value) {
+        const regexp = new RegExp(value.trim(), 'i');
+        this.filteredGoods = this.goods.filter((goodsItem) => 
+        regexp.test(goodsItem.title));
+        this.render();
     }
 };
 
@@ -120,7 +129,12 @@ class Cart {
 }
 
     addItem(item) {
-        this.cartGoods.push(item);
+        const index = this.cartGoods.findIndex((cartItem) => cartItem.id_product === item.id_product);
+        if(index > -1) {
+            this.cartGoods[index].quantity +=1;
+        } else{
+            this.cartGoods.push(item);
+        }
         console.log(this.cartGoods);
     }
 
