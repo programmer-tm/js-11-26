@@ -58,6 +58,10 @@ a {
         color: black;
         opacity: 0.4;
     }
+
+    &:focus::placeholder {
+        color: transparent;
+    }
 }
 
 .cart_button {

@@ -60,6 +60,10 @@ a {
   opacity: 0.4;
 }
 
+.search:focus::placeholder {
+  color: transparent;
+}
+
 .cart_button {
   display: flex;
   justify-content: center;
