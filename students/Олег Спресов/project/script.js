@@ -1,3 +1,10 @@
+const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+
+
+
+
+
+
 class GoodsItem {
   constructor(title, price, image) {
     this.title = title;
