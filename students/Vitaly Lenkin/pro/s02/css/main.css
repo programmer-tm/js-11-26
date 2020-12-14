@@ -17,16 +17,24 @@
           box-sizing: border-box;
 }
 
+* a, * button,
+*::before a,
+*::before button,
+*::after a,
+*::after button {
+  text-decoration: none;
+}
+
+* a:hoover, * button:hoover,
+*::before a:hoover,
+*::before button:hoover,
+*::after a:hoover,
+*::after button:hoover {
+  text-decoration: none;
+}
+
 body {
   font-family: "Lato", sans-serif;
-}
-
-a, button {
-  text-decoration: none;
-}
-
-a:hoover, button:hoover {
-  text-decoration: none;
 }
 
 .clearfix:after {
@@ -171,7 +179,7 @@ section.gap-100 {
 #topbox #top-menu a {
   display: block;
   font-family: "Open Sans", sans-serif;
-  color: #fff;
+  color: #e6e09a;
   text-decoration: none;
   height: 40px;
   line-height: 40px;
@@ -179,11 +187,30 @@ section.gap-100 {
 
 #topbox #top-menu a:hover, #topbox #top-menu a:focus, #topbox #top-menu a:active {
   background: #5e5e5e;
+  color: #f16d7f;
 }
 
 #topbox #top-menu .menu-items {
   padding: 0 20px;
+  color: #e6e09a;
   border-left: 1px solid rgba(255, 255, 255, 0.2);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 40px;
+  line-height: 40px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+}
+
+#topbox #top-menu .menu-items:hover, #topbox #top-menu .menu-items:focus, #topbox #top-menu .menu-items:active {
+  background: #5e5e5e;
+}
+
+#topbox #top-menu .menu-items:hover a, #topbox #top-menu .menu-items:focus a, #topbox #top-menu .menu-items:active a {
+  color: #f16d7f;
 }
 
 #topbox #top-menu .menu-items:last-child {
@@ -266,7 +293,7 @@ footer #footer-box #footerNav a:hover {
 }
 
 .promo .box-600-92-12 {
-  width: 540px;
+  width: 600px;
   height: 92px;
   padding-left: 12px;
   padding-right: 12px;
@@ -352,7 +379,7 @@ footer #footer-box #footerNav a:hover {
 }
 
 .product-gallery .card {
-  height: 372px;
+  height: 350px;
   width: 261px;
   margin-top: 20px;
   margin-bottom: 20px;
