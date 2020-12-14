@@ -1,7 +1,10 @@
 # Logs
 .DS_Store
+
 logs
+
 *.log
+
 npm-debug.log*
 
 .vscode
@@ -10,7 +13,3 @@ npm-debug.log*
 
 .idea/*
 
-
-project
-
-lessons
