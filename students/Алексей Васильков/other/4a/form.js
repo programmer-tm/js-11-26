@@ -7,23 +7,31 @@
 // d. Текст произвольный.
 // e. Если одно из полей не прошло валидацию, необходимо выделить это поле красной рамкой и сообщить пользователю об ошибке.
 
-let check = () => {
+function check() {
+    let errorForm = [null];
     const
         inputName = document.forms.form.form_name.value,
         inputPhone = document.forms.form.form_phone.value,
         inputEmail = document.forms.form.form_email.value,
         nameCheck = /^[aA-zZ-аА-яЯ]+$/g,
         phoneCheck = /^[+7]+[(]+\d{3}[)]+\d{3}\-\d{4}$/g,
-        emailCheck = /^[a-z]{6}+[a-z]{4}+\.[a-z]{2}$/g || /^([a-z]{2})\.([a-z]{4})\@([a-z]{4})\.([a-z]{2})$/g || /^([a-z]{2})\-([a-z]{4})\@([a-z]{4})\.([a-z]{2})$/g;
+        emailCheck = /^([a-z0-9.-]+)@([a-z]{4,5}).([a-z]{2,3})$/g;
+        
 
     if (!inputName.match(nameCheck)) {
+        errorForm = document.getElementById('input_name').style.display='block';
         alert('Имя, должно состоять только из букв!');
+        errorForm = document.getElementById('input_name').style.display='none';
         return false;
     } else if (!inputPhone.match(phoneCheck)) {
+        errorForm = document.getElementById('input_phone').style.display='block';
         alert('Телефон, должен быть в формате: +7(000)000-0000!');
+        errorForm = document.getElementById('input_phone').style.display='none';
         return false;
     } else if (!inputEmail.match(emailCheck)) {
-        alert('Введите, корректную форму email!');
+        errorForm = document.getElementById('input_email').style.display='block';
+        alert('Введите, корректную форму e-mail!');
+        errorForm = document.getElementById('input_email').style.display='none';
         return false;
     } else {
         alert('Ваше сообщение, отправлено!');
