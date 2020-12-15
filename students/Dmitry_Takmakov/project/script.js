@@ -34,6 +34,65 @@ const makeGETRequest = (filename) => {
     });
 }
 
+new Vue({
+    el: '#app',
+    data: {
+        products: [],
+        cartItemsList: [],
+        searchLine: '',
+        isCartVisible: false
+    },
+    mounted() {
+        this.getData();
+        this.getCartData();
+    },
+    methods: {
+        getData() {
+            return new Promise((resolve, reject) => {
+                makeGETRequest('products.json')
+                    .then((data) => {
+                        this.products = data;
+                        resolve();
+                    });
+            });
+        },
+        getCartData() {
+            return new Promise((resolve, reject) => {
+                makeGETRequest('basket_items.json')
+                    .then((data) => {
+                        this.cartItemsList = data.contents;
+                        resolve();
+                    });
+            });
+        },
+        addProductToCart(product) {
+            let id = this.cartItemsList.findIndex((cartItem) => cartItem.product_id === product.product_id);
+            if (id > -1) {
+                this.cartItemsList[id].quantity += 1;
+            } else {
+                this.cartItemsList.push(product);
+                this.cartItemsList[this.cartItemsList.length - 1].quantity = 1;
+            }
+            console.log(this.cartItemsList);
+        },
+        removeProductFromCart(product_id) {
+            this.cartItemsList = this.cartItemsList.filter((product) => product.product_id !== parseInt(product_id));
+            console.log(this.cartItemsList);
+        }
+    },
+    computed: {
+        filteredProducts() {
+            const regularExpression = new RegExp(this.searchLine.trim(), 'i');
+            return this.products.filter((product) => regularExpression.test(product.title));
+        },
+        totalPrice() {
+            return this.products.reduce((accumulated, current) => {
+                return accumulated + current.price;
+            }, 0);
+        }
+    }
+});
+/*
 class Products {
     constructor({
         product_id,
@@ -210,3 +269,4 @@ class BasketItem {
 const basket = new Basket();
 const productsList = new ProductsList(basket);
 basket.getData();
+*/
