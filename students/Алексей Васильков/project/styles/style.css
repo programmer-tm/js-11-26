@@ -100,7 +100,7 @@ a {
   align-items: center;
   flex-direction: column;
   width: 200px;
-  height: 250px;
+  min-height: 250px;
   border: 1px solid maroon;
   margin-top: 10px;
 }
@@ -120,10 +120,19 @@ a {
   padding: 5px;
 }
 
-.goods .item .product_price {
+.goods .item .price_block {
+  display: flex;
+  justify-content: center;
   color: firebrick;
   font-weight: 600;
+}
+
+.goods .item .product_price {
   padding: 5px 5px 0px 5px;
+}
+
+.goods .item .product_badge {
+  padding: 5px 5px 0px 0px;
 }
 
 .goods .buy_button {

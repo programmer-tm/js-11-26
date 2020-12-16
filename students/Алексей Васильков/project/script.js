@@ -33,6 +33,68 @@ const makeGETRequest = (path) => {
     });
 };
 
+new Vue({
+    el: '#app',
+    data: {
+        goods: [],
+        cartGoods: [],
+        searchValue: '',
+    },
+    mounted() {
+        this.fetchData();
+        this.fetchCartData();
+    },
+    methods: {
+        fetchData() {
+            return new Promise((resolve, reject) => {
+                makeGETRequest('catalogData.json')
+                    .then((data) => {
+                        this.goods = data;
+                        resolve();
+                    });
+            });
+        },
+        fetchCartData() {
+            return new Promise((resolve, reject) => {
+                makeGETRequest('getCart.json')
+                    .then((data) => {
+                        this.cartGoods = data.contents;
+                        // this.totalPrice = data.totalPrice;
+                        // this.countGoods = data.countGoods;
+                        resolve();
+                    });
+            });
+        },
+        addToCart(item) {
+            const index = this.cartGoods.findIndex((cartItem) => cartItem.id_product === item.id_product);
+            if(index > -1) {
+                this.cartGoods[index].quantity +=1;
+            } else{
+                this.cartGoods.push(item);
+            }
+            console.log(this.cartGoods);
+        },
+        removeItem(id) {
+            this.cartGoods = this.cartGoods.filter((goodsItem) =>
+            goodsItem.id_product !== parseInt(id));
+            console.log(this.cartGoods);
+        }
+    },
+    computed: {
+        filteredGoods() {
+            const regexp = new RegExp(this.searchValue.trim(), 'i');
+            return this.goods.filter((goodsItem) => 
+            regexp.test(goodsItem.title));
+        },
+        totalPrice() {
+            return this.goods.reduce((acc, curVal) => {
+                return acc + curVal.price;
+            }, 0);
+        },        
+    },
+});
+
+/*
 class GoodsItem {
     constructor({id_product, image, title, price}) {
         this.id = id_product;
@@ -214,6 +276,9 @@ cart.fetchData();
 const goodsList = new GoodsList(cart);
 goodsList.fetchData()
     .then(() => {
-    goodsList.render();
-    goodsList.getTotalPrice();
+        goodsList.render();
+        goodsList.getTotalPrice();
     });
+
+
+*/
