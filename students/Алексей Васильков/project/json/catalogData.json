@@ -1,28 +1,28 @@
 [
     {
         "id_product": 1,
-        "image": "nout.jpg",
+        "image": "img/nout.jpg",
         "title": "Ноутбук",
         "price": 60000,
         "quantity": 1
     },
     {
         "id_product": 2,
-        "image": "keyboard.jpg",
+        "image": "img/keyboard.jpg",
         "title": "Клавиатура",
         "price": 5000,
         "quantity": 1
     },
     {
         "id_product": 3,
-        "image": "mouse.jpg",
+        "image": "img/mouse.jpg",
         "title": "Мышь",
         "price": 2000,
         "quantity": 1
     },
     {
         "id_product": 4,
-        "image": "monitor.jpg",
+        "image": "img/monitor.jpg",
         "title": "Монитор",
         "price": 30000,
         "quantity": 1
