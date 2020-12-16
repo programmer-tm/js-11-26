@@ -78,3 +78,8 @@ img[alt="product"] {
 .add_cart {
     margin-left: 54px;
 }
+
+.search {
+    height: 25px;
+    margin-top: 15px;
+}

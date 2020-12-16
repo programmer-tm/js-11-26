@@ -52,6 +52,7 @@ class GoodsItem {
 class GoodsList {
   constructor(basket) {
     this.goods = [];
+    this.filteredGoods = [];
     this.basket = basket;
 
     document.querySelector('.goods').addEventListener('click', (event) => {
@@ -65,6 +66,10 @@ class GoodsList {
           console.error(`Can't find element with id ${id}`)
         }
       }
+    });
+
+    document.querySelector('.search').addEventListener('input', (event) => {
+      this.search(event.target.value);
     });
   }
 
@@ -102,11 +107,16 @@ class GoodsList {
   }
 
   render() {
-    const goodsList = this.goods.map(item => {
+    const goodsList = this.filteredGoods.map(item => {
       const goodsItem = new GoodsItem(item);
       return goodsItem.render();
     });
     document.querySelector('.goods').innerHTML = goodsList.join('');
+  }
+  search(value) {
+    const regexp = new RegExp(value.trim(), 'i');
+    this.filteredGoods = this.goods.filter((goodsItem) => regexp.test(goodsItem.title));
+    this.render();
   }
 }
 
@@ -115,10 +125,17 @@ class Basket {
     this.basketGoods = [];
     this.amount = 0;
     this.countGoods = 0;
+
   }
 
   addItem(item) {
-    this.basketGoods.push(item);
+    const index = this.basketGoods.findIndex((basketItem) => basketItem.id_product === item.id_product);
+    if (index > -1) {
+      this.basketGoods[index].quantity += 1;
+    } else {
+      item.quantity = 1;
+      this.basketGoods.push(item);
+    }
     console.log(this.basketGoods);
   }
 
