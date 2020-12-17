@@ -34,6 +34,119 @@ const makeGETRequest = (filename) => {
     });
 }
 
+Vue.component('v-nothing-found', {
+    template: `
+        <p>Ошибка! Данные не получены!</p>
+    `
+});
+
+Vue.component('v-header', {
+    props: ['cartVisible', 'cartItems', 'search'],
+    template: `
+        <header>
+            <nav class="navbar navbar-light d-flex bg-light">
+                <a class="navbar-brand flex-grow-1">Vinyl Webshop</a>
+                <v-search
+                    @newSearch="newSearchInput"
+                ></v-search>
+                <button @click="cartClickHandler" type="submit"><i
+                        class="fas fa-shopping-cart"></i></button>
+                <div v-if="cartVisible" class="cart">
+                    <ul class="list-group mb-3">
+                        <v-basket
+                            v-for="item in cartItems"
+                            :key="item.product_id"
+                            :element="item"
+                        ></v-basket>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+    `,
+    methods: {
+        cartClickHandler() {
+            this.$emit('change-cart-visibility');
+        },
+        newSearchInput(data) {
+            this.$emit('search', data);
+        }
+    }
+});
+
+Vue.component('v-basket', {
+    props: ['element'],
+    template: `
+    <li class="d-flex justify-content-between lh-sm cart-item">
+        <div>
+            <img :src="element.cover" :alt="element.title">
+        </div>
+        <div>
+            <h6 class="my-0">{{ element.title }}</h6>
+        </div>
+        <span class="text-muted">{{ element.quantity }}</span> x
+        <span class="text-muted">$ {{ element.price }}</span>
+    </li>
+    `
+});
+
+Vue.component('v-search', {
+    template: `
+    <form class="d-flex searchbar">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+            @input="searchInput">
+    </form>
+    `,
+    methods: {
+        searchInput() {
+            this.$emit('newSearch', this.$el.lastChild.value);
+        }
+    }
+});
+
+Vue.component('v-product-list', {
+    props: ['products'],
+    template: `
+        <main>
+            <div class="products_list">
+                    <v-product
+                        v-for="product in products"
+                        :key="product.product_id"
+                        :element="product"
+                        @addProductToCart="addToCartHandler"
+                    ></v-product>
+                <div v-if="!products.length" class="empty-products">
+                    Ничего не найдено :(
+                </div>
+            </div>
+        </main>
+    `,
+    methods: {
+        addToCartHandler(data) {
+            this.$emit('add', data);
+        }
+    }
+});
+
+Vue.component('v-product', {
+    props: ['element'],
+    template: `
+        <div class="card">
+            <img :src="element.cover" class="card-img-top" :alt="element.product_id">
+            <div class="card-body">
+                <h5 class="card-title">{{ element.title }}</h5>
+                <p class="card-text">Record price: $ {{ element.price }}</p>
+                <button type="button" class="btn btn-primary" @click="addProductToCart"><i
+                        class="fas fa-cart-plus"></i> Add to cart</button>
+            </div>
+        </div>
+    `,
+    methods: {
+        addProductToCart() {
+            this.$emit('addProductToCart', this.element);
+        }
+    }
+});
+
 new Vue({
     el: '#app',
     data: {
@@ -78,6 +191,9 @@ new Vue({
         removeProductFromCart(product_id) {
             this.cartItemsList = this.cartItemsList.filter((product) => product.product_id !== parseInt(product_id));
             console.log(this.cartItemsList);
+        },
+        setNewSearchValue(value) {
+            this.searchLine = value;
         }
     },
     computed: {
