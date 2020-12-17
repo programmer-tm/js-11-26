@@ -43,6 +43,7 @@ a {
   align-items: center;
   padding-top: 16px;
   padding-bottom: 16px;
+  position: relative;
 }
 
 .logo {
@@ -98,4 +99,12 @@ a {
 .item__image {
   width: 160px;
   overflow: hidden;
+}
+
+.cart {
+  position: absolute;
+  right: 0;
+  top: 75px;
+  padding: 16px;
+  background-color: #fff;
 }

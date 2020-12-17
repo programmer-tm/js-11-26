@@ -32,6 +32,7 @@ new Vue({
     goods: [],
     cartGoods: [],
     searchValue: '',
+    isVisibleCart: false,
   },
   mounted() {
     this.fetchData();
@@ -54,7 +55,8 @@ new Vue({
       return new Promise((resolve, reject) => {
         sendRequest('dataCart.json')
           .then((data) => {
-            this.cartGoods = data.content;
+            this.cartGoods = data.contents;
+            console.log(this.cartGoods);
             // this.amount = data.amount;
             // this.countGoods = data.countGoods;
             resolve();
@@ -71,9 +73,14 @@ new Vue({
       } else {
         this.cartGoods.push(item);
       }
+      console.log(this.cartGoods);
     },
     deleteFromCart(id) {
       this.cartGoods = this.cartGoods.filter((goodsItem) => goodsItem.id_product !== +id);
+      console.log(this.cartGoods);
+    },
+    isVisibleCartToggler() {
+      this.isVisibleCart = !this.isVisibleCart;
     },
   },
   computed: {
