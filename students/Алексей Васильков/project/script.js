@@ -38,7 +38,8 @@ new Vue({
     data: {
         goods: [],
         cartGoods: [],
-        searchValue: '',
+        searchLine: '',
+        isVisibleCart: false,
     },
     mounted() {
         this.fetchData();
@@ -78,11 +79,14 @@ new Vue({
             this.cartGoods = this.cartGoods.filter((goodsItem) =>
             goodsItem.id_product !== parseInt(id));
             console.log(this.cartGoods);
+        },
+        handlerCartButtonClick() {
+            this.isVisibleCart = !this.isVisibleCart;
         }
     },
     computed: {
         filteredGoods() {
-            const regexp = new RegExp(this.searchValue.trim(), 'i');
+            const regexp = new RegExp(this.searchLine.trim(), 'i');
             return this.goods.filter((goodsItem) => 
             regexp.test(goodsItem.title));
         },
@@ -90,7 +94,7 @@ new Vue({
             return this.goods.reduce((acc, curVal) => {
                 return acc + curVal.price;
             }, 0);
-        },        
+        },
     },
 });
 
