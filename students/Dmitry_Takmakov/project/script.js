@@ -41,7 +41,7 @@ Vue.component('v-nothing-found', {
 });
 
 Vue.component('v-header', {
-    props: ['cartVisible', 'cartItems', 'search'],
+    props: ['cartVisible', 'cartItems', 'search', 'error'],
     template: `
         <header>
             <nav class="navbar navbar-light d-flex bg-light">
@@ -58,6 +58,7 @@ Vue.component('v-header', {
                             :key="item.product_id"
                             :element="item"
                         ></v-basket>
+                        <v-nothing-found v-if="error" />
                     </ul>
                 </div>
             </nav>
@@ -104,7 +105,7 @@ Vue.component('v-search', {
 });
 
 Vue.component('v-product-list', {
-    props: ['products'],
+    props: ['products', 'error'],
     template: `
         <main>
             <div class="products_list">
@@ -114,6 +115,7 @@ Vue.component('v-product-list', {
                         :element="product"
                         @addProductToCart="addToCartHandler"
                     ></v-product>
+                <v-nothing-found v-if="error" />
                 <div v-if="!products.length" class="empty-products">
                     Ничего не найдено :(
                 </div>
@@ -153,7 +155,8 @@ new Vue({
         products: [],
         cartItemsList: [],
         searchLine: '',
-        isCartVisible: false
+        isCartVisible: false,
+        isError: false
     },
     mounted() {
         this.getData();
@@ -166,6 +169,9 @@ new Vue({
                     .then((data) => {
                         this.products = data;
                         resolve();
+                    })
+                    .catch(() => {
+                        this.isError = true;
                     });
             });
         },
@@ -175,6 +181,9 @@ new Vue({
                     .then((data) => {
                         this.cartItemsList = data.contents;
                         resolve();
+                    })
+                    .catch(() => {
+                        this.isError = true;
                     });
             });
         },

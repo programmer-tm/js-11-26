@@ -21,10 +21,12 @@
         <v-header
             :cart-visible="isCartVisible"
             :cart-items="cartItemsList"
+            :error="isError"
             @search="setNewSearchValue"
             @change-cart-visibility="isCartVisible = !isCartVisible"
         ></v-header>
         <v-product-list
+            :error="isError"
             :products="filteredProducts"
             @add="addProductToCart"
         ></v-product-list>
