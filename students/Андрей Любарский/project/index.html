@@ -14,8 +14,8 @@
         <span class="logo">E-Shop</span>
         <section class="searchLine">
             <label for="search">Поиск</label>
-            <input type="text" id="search" v-model="searchValue">
-            <button @click="filteredGoods">Найти</button>
+            <input type="text" id="search" v-model="searchInputValue">
+            <button @click="handleSearchButton">Найти</button>
         </section>
         <button type="button" class="cart-button" v-on:click="handleShowHideButton" v-if="isVisibleCart">Скрыть
             корзину

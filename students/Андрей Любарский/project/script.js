@@ -11,6 +11,7 @@ const app = new Vue({
         cartTotalPrice: 0,
         cartTotalGoods: 0,
         isVisibleCart: true,
+        searchInputValue: '',
         searchValue: ''
     },
 
@@ -90,8 +91,11 @@ const app = new Vue({
 
         handleShowHideButton() {
             return this.isVisibleCart = !this.isVisibleCart;
-        }
+        },
 
+        handleSearchButton(){
+            this.searchValue = this.searchInputValue;
+        }
 
     },
 
@@ -99,6 +103,7 @@ const app = new Vue({
         filteredGoods() {
             const regexp = new RegExp(this.searchValue.trim(), 'i');
             return this.goods.filter((goodsItem) => regexp.test(goodsItem.product_name));
+
         },
 
         totalPrice() {
