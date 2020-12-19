@@ -15,17 +15,31 @@
     <div id="app">
         <header class="header d-flex">
             <span class="logo">E-Shop</span>
-            <input type="text" class="search" placeholder="Search..." />
-            <button type="button" class="cart-button">Корзина</button>
+            <div>
+                <input type="text" class="search" placeholder="Search..." v-model="searchValue" />
+                <button type="button" class="cart-button" v-on:click="searchClick()">Искать</button>
+            </div>
+            <button type="button" class="cart-button" v-on:click="showBasketClick()">Корзина</button>
         </header>
         <main>
+            <section class="basketGoods" v-show="showBasket">
+                <div class="item" v-for="item in basketGoods">
+                    <h4>{{item.product_name}}</h4>
+                    <p>{{item.price}}</p>
+                    <p>{{item.quantity}}</p>
+                </div>
+            </section>              
             <section class="goods">
                 <div class="item" v-for="item in filteredGoods">
                     <h4>{{item.product_name}}</h4>
                     <p>{{item.price}}</p>
                     <button type="button" v-on:click="addToBasket(item)">Add to basket</button>
                 </div>
+                <div class="noItems" v-show="filteredGoods.length === 0">
+                    <h4>Нет данных</h4>
+                </div>
             </section>
+          
         </main>
     </div>
 </body>

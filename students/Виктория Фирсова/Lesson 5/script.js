@@ -37,6 +37,8 @@ new Vue({
     goods: [],
     basketGoods: [],
     searchValue: '',
+    filteredGoods: [],
+    showBasket: false,
   },
   mounted() {
     this.fetchData();
@@ -48,6 +50,7 @@ new Vue({
         sendRequest('catalogData.json')
           .then((data) => {
             this.goods = data;
+            this.filteredGoods = data;
             resolve();
           });
       });
@@ -69,20 +72,30 @@ new Vue({
         this.basketGoods[index].quantity += 1;
         // this.basketGoods[index] = { ...this.basketGoods[index], quantity: this.basketGoods[index].quantity + 1 };
       } else {
-        this.basketGoods.push(item);
+        this.basketGoods.push({ ...item, quantity:1});
       }
       console.log(this.basketGoods);
     },
     removeItem(id) {
       this.basketGoods = this.basketGoods.filter((goodsItem) => goodsItem.id_product !== parseInt(id));
       console.log(this.basketGoods);
+    },
+    searchClick()
+    {
+      const regexp = new RegExp(this.searchValue.trim(), 'i');
+      this.filteredGoods = this.goods.filter((goodsItem) => regexp.test(goodsItem.product_name));
+    },
+    showBasketClick()
+    {
+      this.showBasket = !this.showBasket;
+      this.basketGoods.lenght 
     }
   },
   computed: {
-    filteredGoods() {
-      const regexp = new RegExp(this.searchValue.trim(), 'i');
-      return this.goods.filter((goodsItem) => regexp.test(goodsItem.product_name));
-    },
+    // filteredGoods() {
+    //   const regexp = new RegExp(this.searchValue.trim(), 'i');
+    //   return this.goods.filter((goodsItem) => regexp.test(goodsItem.product_name));
+    // },
     totalPrice() {
       return this.goods.reduce((acc, curVal) => {
         return acc + curVal.price;
@@ -123,7 +136,6 @@ class GoodsList {
     this.goods = [];
     this.filteredGoods = [];
     this.basket = basket;
-    
 
     document.querySelector('.goods').addEventListener('click', (event) => {
       if (event.target.name === 'add-to-basket') {
@@ -158,18 +170,18 @@ class GoodsList {
     });
   }
 
-//  newFetchData(callback) {
-//    fetch(`${API}/catalogData.json`)
-//      .then((response) => {
-//        console.log(response);
-//        return response.json();
-//      })
-//      .then((data) => {
-//        console.log(data);
-//        this.goods = data;
-//        callback();
-//      });
-//  }
+  newFetchData(callback) {
+    fetch(`${API}/catalogData.json`)
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        this.goods = data;
+        callback();
+      });
+  }
 
   addToBasket(item) {
     this.basket.addItem(item);
