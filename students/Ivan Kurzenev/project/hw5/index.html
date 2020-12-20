@@ -39,11 +39,14 @@
                                 class="item__buy-button">Удалить</button>
                         </div>
                     </div>
+                    <p v-if="cartGoods.length <= 0" class="emptyGoods">
+                        Корзина пуста
+                    </p>
                     <p class=" item__price marginTop">Общая цена: {{totalPrice}} &#8381;</p>
                     <button @click="cleatCart" type="button" class="item__buy-button marginTop">Очистить
                         корзину</button>
                 </section>
-                <p v-if=" filteredGoods.length <=0" class="emptyGoodsList">
+                <p v-if=" filteredGoods.length <=0" class="emptyGoods">
                     Нет данных
                 </p>
             </section>
