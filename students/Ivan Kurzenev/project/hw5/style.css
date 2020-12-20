@@ -22,6 +22,11 @@ a {
   padding-right: calc(50% - 400px);
 }
 
+.container {
+  width: 800px;
+  margin: 0 auto;
+}
+
 .marginTop {
   margin-top: 16px;
 }
@@ -73,6 +78,7 @@ a {
 }
 
 .main {
+  position: relative;
   padding-top: 32px;
 }
 
@@ -103,8 +109,25 @@ a {
 
 .cart {
   position: absolute;
+  top: 0;
   right: 0;
-  top: 75px;
   padding: 16px;
   background-color: #fff;
+}
+
+.cartItem {
+  display: flex;
+  justify-content: space-between;
+  width: 230px;
+  padding: 10px 0;
+}
+
+.cartItem__right {
+  align-items: center;
+  display: flex;
+}
+
+.emptyGoodsList {
+  text-align: center;
+  width: 100%;
 }

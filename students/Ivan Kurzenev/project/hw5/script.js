@@ -56,7 +56,6 @@ new Vue({
         sendRequest('dataCart.json')
           .then((data) => {
             this.cartGoods = data.contents;
-            console.log(this.cartGoods);
             // this.amount = data.amount;
             // this.countGoods = data.countGoods;
             resolve();
@@ -71,13 +70,16 @@ new Vue({
       if (index > -1) {
         this.cartGoods[index].quantity += 1;
       } else {
+        item.quantity = 1;
         this.cartGoods.push(item);
+        // console.log(this.cartGoods);
       }
-      console.log(this.cartGoods);
     },
-    deleteFromCart(id) {
-      this.cartGoods = this.cartGoods.filter((goodsItem) => goodsItem.id_product !== +id);
-      console.log(this.cartGoods);
+    deleteFromCart(item) {
+      this.cartGoods = this.cartGoods.filter((cartItem) => cartItem.id_product !== item.id_product);
+    },
+    cleatCart() {
+      this.cartGoods = [];
     },
     isVisibleCartToggler() {
       this.isVisibleCart = !this.isVisibleCart;
@@ -89,7 +91,7 @@ new Vue({
       return this.goods.filter((goodsItem) => regexp.test(goodsItem.title));
     },
     totalPrice() {
-      return this.goods.reduce((acc, curVal) => acc + curVal.price, 0);
+      return this.cartGoods.reduce((acc, curVal) => acc + curVal.price * curVal.quantity, 0);
     },
   },
 });
