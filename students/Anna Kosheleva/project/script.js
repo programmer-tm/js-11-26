@@ -31,22 +31,45 @@
     });
   }
 
-  Vue.component('v-header', {
-    props: ['search', 'isCartVisible', 'cartGoods'],
+  Vue.component('v-error', {
+    props: ['message'],
     template: `
-    <header class="header d-flex">
-      <span class="logo">E-Shop</span>
-      <input type="text" v-model="search" class="search" placeholder="Search..." />
-      <button @click="handleClick" type="button" class="cart-button">Корзина</button>
-      <div v-if="isCartVisible" class="cart">
-          <div class="cart-item" v-for="item in cartVisible">
+      <div class="error">
+        Ошибка! {{ message }}
+      </div>
+    `,
+  });
+
+  Vue.component('v-search', {
+    props: ['value'],
+    template: `
+        <input type="text" :value="value" @input="$emit('input', $event)" class="search" placeholder="Search..." />
+    `,
+  });
+
+  Vue.component('v-basket', {
+    props: ['goods'],
+    template: `
+      <div class="cart">
+          <div class="cart-item" v-for="item in goods">
               <p class="cart-item__title">{{item.product_name}}</p>
               <p>{{item.quantity}} x {{item.price}}</p>
           </div>
       </div>
 </header>
     `,
-    methods: {
+  });
+
+  Vue.component('v-header', {
+    template: `
+        <header class="header d-flex">
+          <span class="logo">E-Shop</span>
+          <slot />
+          <button @click="handleClick" type="button" class="cart-button">Корзина</button>
+          <slot name="basket" />
+          </header>
+    `,
+    methods: {  
       handleClick() {
         this.$emit('change-is-cart-visible');
       } 
@@ -98,7 +121,8 @@
       goods: [],
       basketGoods: [],
       searchValue: '',
-      isVisible: true,
+      isVisible: false,
+      errorMessage: '',
     },
     mounted() {
       this.fetchData();
@@ -111,6 +135,9 @@
             .then((data) => {
               this.goods = data;
               resolve();
+            })
+            .catch((error) => {
+              this.errorMessage ='Не удалось получить список товаров'
             });
         });
       },
@@ -122,6 +149,9 @@
               // this.amount = data.amount;
               // this.countGoods = data.countGoods;
               resolve();
+            })
+            .catch((error) => {
+              this.errorMessage ='Не удалось получить содержимое корзины'
             });
         });
       },
@@ -139,7 +169,10 @@
         this.basketGoods = this.basketGoods.filter((goodsItem) => goodsItem.id_product !== parseInt(id));
         console.log(this.basketGoods);
       },
-      
+      handleSearchInput(event) {
+        console.log(event);
+        this.searchValue = event.target.value;
+      }
     },
     computed: {
       filteredGoods() {

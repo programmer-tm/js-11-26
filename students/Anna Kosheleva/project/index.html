@@ -11,15 +11,22 @@
 <body>
     <div id="app">
         <v-header
-            v-bind:search="searchValue"
-            :is-cart-visible="isVisible"
-            :cart-goods="basketGoods"
             @change-is-cart-visible="isVisible = !isVisible"
-        ></v-header>
+        >
+            <template v-slot:default>
+                <v-search :value="searchValue" @input="handleSearchInput" />
+            </template>
+
+            <template v-slot:basket>
+                <v-basket v-if="isVisible" :goods="basketGoods" />
+            </template>
+          
+        </v-header>
         <v-goods
             v-bind:goods="filteredGoods"
             v-on:add="addToBasket"
         ></v-goods>
+        <v-error v-if="errorMessage.length" :message="errorMessage" />
     </div>
 </body>
 </html>
