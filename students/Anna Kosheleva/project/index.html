@@ -10,29 +10,16 @@
 </head>
 <body>
     <div id="app">
-        <header class="header d-flex">
-            <span class="logo">E-Shop</span>
-            <input type="text" v-model="searchValue" class="search" placeholder="Search..." />
-            <button @click="isVisible = !isVisible" type="button" class="cart-button">Корзина</button>
-            <div v-if="isVisible" class="cart">
-                <div class="cart-item" v-for="item in basketGoods">
-                    <p class="cart-item__title">{{item.product_name}}</p>
-                    <p>{{item.quantity}} x {{item.price}}</p>
-                </div>
-            </div>
-        </header>
-        <main>
-            <section class="goods">
-                <div class="item" v-for="item in filteredGoods">
-                    <h4>{{item.product_name}}</h4>
-                    <p>{{item.price}}</p>
-                    <button type="button" v-on:click="addToBasket(item)">Add to basket</button>
-                </div>
-                <div v-if="!filteredGoods.length" class="goods-empty">
-                    Нет данных
-                </div>
-            </section>
-        </main>
+        <v-header
+            v-bind:search="searchValue"
+            :is-cart-visible="isVisible"
+            :cart-goods="basketGoods"
+            @change-is-cart-visible="isVisible = !isVisible"
+        ></v-header>
+        <v-goods
+            v-bind:goods="filteredGoods"
+            v-on:add="addToBasket"
+        ></v-goods>
     </div>
 </body>
 </html>

@@ -30,6 +30,67 @@
       xhr.send();
     });
   }
+
+  Vue.component('v-header', {
+    props: ['search', 'isCartVisible', 'cartGoods'],
+    template: `
+    <header class="header d-flex">
+      <span class="logo">E-Shop</span>
+      <input type="text" v-model="search" class="search" placeholder="Search..." />
+      <button @click="handleClick" type="button" class="cart-button">Корзина</button>
+      <div v-if="isCartVisible" class="cart">
+          <div class="cart-item" v-for="item in cartVisible">
+              <p class="cart-item__title">{{item.product_name}}</p>
+              <p>{{item.quantity}} x {{item.price}}</p>
+          </div>
+      </div>
+</header>
+    `,
+    methods: {
+      handleClick() {
+        this.$emit('change-is-cart-visible');
+      } 
+    }
+  });
+
+  Vue.component('v-goods', {
+    props: ['goods'],
+    template: `
+      <main>
+        <section class="goods">
+            <v-item
+            v-for="item in goods"
+            v-bind:element="item"
+            v-on:addToBasket="handleAddToBasket"
+            />
+            <div v-if="!goods.length" class="goods-empty">
+                Нет данных
+            </div>
+        </section>
+      </main>
+    `,
+    methods: {
+      handleAddToBasket(data) {
+        this.$emit('add', data);
+      },
+    }
+  });
+
+  Vue.component('v-item', {
+    props: ['element'],
+    template: `
+      <div class="item">
+          <h4>{{element.product_name}}</h4>
+          <p>{{element.price}}</p>
+          <button type="button" v-on:click="addToBasket(element)">Add to basket</button>
+      </div>
+    `,
+    methods: {
+      addToBasket() {
+        this.$emit('addToBasket', this.element)
+      }
+    }
+  });
   
   new Vue({
     el: '#app',
@@ -37,7 +98,7 @@
       goods: [],
       basketGoods: [],
       searchValue: '',
-      isVisible: false,
+      isVisible: true,
     },
     mounted() {
       this.fetchData();
@@ -77,7 +138,8 @@
       removeItem(id) {
         this.basketGoods = this.basketGoods.filter((goodsItem) => goodsItem.id_product !== parseInt(id));
         console.log(this.basketGoods);
-      }
+      },
+      
     },
     computed: {
       filteredGoods() {
