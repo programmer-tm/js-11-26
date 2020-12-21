@@ -1,8 +1,9 @@
 'use strict';
 
-// 1. Вынести поиск в отдельный компонент.
-// 2. Вынести корзину в отдельный компонент.
-// 3. *Создать компонент с сообщением об ошибке. Компонент должен отображаться, когда не удаётся выполнить запрос к серверу.
+// 1. Привязать добавление товара в корзину к реальному API.
+// 2. Добавить API для удаления товара из корзины.
+// 3. *Добавить файл stats.json, в котором будет храниться статистика действий пользователя с корзиной. В файле должны быть поля с названием действия (добавлено/удалено), названием товара, с которым производилось действие и временем, когда оно было совершено.
+
 
 const API_URL = 'https://raw.githubusercontent.com/Dragon-program-sib/js-11-26/master/students/%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9%20%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2/project/json/';
 
@@ -36,9 +37,7 @@ Vue.component('v-header', {
     props: ['isVisibleCart'],
     template: `
         <header class="header center">
-            <span>
-                <a class="logo" href="#">E-Shop</a>
-            </span>
+            <a class="logo" href="#">E-Shop</a>
             <slot />
             <button class="cart_button" @click="handlerClick" type="button">Корзина</button>
             <slot name="cart" />
@@ -109,7 +108,7 @@ Vue.component('v-item', {
     props: ['element'],
     template: `
         <div class="item">
-            <img class="product_img" :src="element.image" alt="product" />
+            <img class="product_img" :src="element.image" alt="product image" />
             <h4 class="product_name">{{element.title}}</h4>
             <div class="price_block">
                 <p class="product_price">{{element.price}}</p>
