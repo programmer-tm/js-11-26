@@ -1,9 +1,8 @@
 'use strict';
 
-// 1. Добавить методы и обработчики событий для поля поиска. Создать в объекте данных поле searchLine и привязать к нему содержимое поля ввода. На кнопку «Искать» добавить обработчик клика, вызывающий метод FilterGoods.
-// 2. Добавить корзину. В html-шаблон добавить разметку корзины. Добавить в объект данных поле isVisibleCart, управляющее видимостью корзины.
-// 3. *Добавлять в .goods-list заглушку с текстом «Нет данных» в случае, если список товаров пуст.
-
+// 1. Вынести поиск в отдельный компонент.
+// 2. Вынести корзину в отдельный компонент.
+// 3. *Создать компонент с сообщением об ошибке. Компонент должен отображаться, когда не удаётся выполнить запрос к серверу.
 
 const API_URL = 'https://raw.githubusercontent.com/Dragon-program-sib/js-11-26/master/students/%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B5%D0%B9%20%D0%92%D0%B0%D1%81%D0%B8%D0%BB%D1%8C%D0%BA%D0%BE%D0%B2/project/json/';
 
@@ -33,6 +32,99 @@ const makeGETRequest = (path) => {
     });
 };
 
+Vue.component('v-header', {
+    props: ['isVisibleCart'],
+    template: `
+        <header class="header center">
+            <span>
+                <a class="logo" href="#">E-Shop</a>
+            </span>
+            <slot />
+            <button class="cart_button" @click="handlerClick" type="button">Корзина</button>
+            <slot name="cart" />
+        </header>
+    `,
+    methods: {
+        handlerClick() {
+            this.$emit('change-is-cart-visible');
+        }
+    }
+});
+
+Vue.component('v-error', {
+    props: ['message'],
+    template: `
+        <div class="error">
+            Ошибка! {{message}}
+        </div>
+    `,
+});
+
+Vue.component('v-search', {
+    props: ['value'],
+    template: `
+        <form>
+            <input class="search" :value="value" @input="$emit('input', $event.target.value)" type="text" placeholder="Что будем искать?">
+            <button class="search_button" @click="filteredGoods()">Найти</button>
+        </form>
+    `,
+});
+
+Vue.component('v-cart', {
+    props: ['goods'],
+    template: `
+        <div class="cart_drop">
+            <div class="cart_drop__item" v-for="item in goods">
+                <div>
+                    <h4 class="cart_drop__item__product_name">{{item.title}}</h4>
+                    <p class="cart_drop__item__product_price">{{item.quantity}} x {{item.price}}</p>
+                    <p class="cart_drop__item__product_currency" v-html="'\u20bd'"></p>
+                </div>
+            </div>
+        </div>
+    `,
+});
+
+Vue.component('v-goods', {
+    props: ['goods'],
+    template: `
+        <main>
+            <section class="goods container">
+                <v-item v-for="item in goods" v-bind:element="item" v-on:addToCart="handlerAddToCart" />
+                <div class="goods_empty" v-if="!goods.length">
+                    <p>Нет данных.</p>
+                    <p>Информация, по Вашему запросу, отсутствует.</p>
+                </div>
+            </section>
+        </main>
+    `,
+    methods: {
+        handlerAddToCart(data) {
+            this.$emit('add', data);
+        }
+    }
+});
+
+Vue.component('v-item', {
+    props: ['element'],
+    template: `
+        <div class="item">
+            <img class="product_img" :src="element.image" alt="product" />
+            <h4 class="product_name">{{element.title}}</h4>
+            <div class="price_block">
+                <p class="product_price">{{element.price}}</p>
+                <p class="product_badge" v-html="'\u20bd'"></p>
+            </div>
+            <button class="buy_button" type="button" @click="addToCart(item)">Купить</button>
+        </div>
+    `,
+    methods: {
+        addToCart() {
+            this.$emit('addToCart', this.element);
+        }
+    }  
+});
+
 new Vue({
     el: '#app',
     data: {
@@ -40,6 +132,7 @@ new Vue({
         cartGoods: [],
         searchLine: '',
         isVisibleCart: false,
+        errorMessage: '',
     },
     mounted() {
         this.fetchData();
@@ -52,6 +145,9 @@ new Vue({
                     .then((data) => {
                         this.goods = data;
                         resolve();
+                    })
+                    .catch((error) => {
+                        this.errorMessage = 'Не удалось получить, список товаров!'
                     });
             });
         },
@@ -63,6 +159,9 @@ new Vue({
                         // this.totalPrice = data.totalPrice;
                         // this.countGoods = data.countGoods;
                         resolve();
+                    })
+                    .catch((error) => {
+                        this.errorMessage = 'Не удалось получить, содержимое корзины!'
                     });
             });
         },
@@ -79,9 +178,6 @@ new Vue({
             this.cartGoods = this.cartGoods.filter((goodsItem) =>
             goodsItem.id_product !== parseInt(id));
             console.log(this.cartGoods);
-        },
-        handlerCartButtonClick() {
-            this.isVisibleCart = !this.isVisibleCart;
         }
     },
     computed: {

@@ -12,45 +12,17 @@
 
 <body>
     <div id="app">
-        <header class="header center">
-            <span>
-                <a class="logo" href="#">E-Shop</a>
-            </span>
-            <form>
-                <input class="search" v-model="searchLine" type="text" placeholder="Что будем искать?">
-                <button class="search_button" @click="filteredGoods()">Найти</button>
-            </form>
-            <div>
-                <button class="cart_button" @click="handlerCartButtonClick()" type="button">Корзина</button>
-                <div class="cart_drop" v-if="isVisibleCart">
-                    <div class="cart_drop__item" v-for="item in cartGoods">
-                        <div>
-                            <h4 class="cart_drop__item__product_name">{{item.title}}
-                                <p class="cart_drop__item__product_price">{{item.quantity}} x {{item.price}}</p>
-                                <p class="cart_drop__item__product_currency" v-html="'\u20bd'"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <main>
-            <section class="goods container">
-                <div class="item" v-for="item in filteredGoods">
-                    <img class="product_img" :src="item.image" alt="product" />
-                    <h4 class="product_name">{{item.title}}
-                    </h4>
-                    <div class=" price_block">
-                        <p class="product_price">{{item.price}}</p>
-                        <p class="product_badge" v-html="'\u20bd'"></p>
-                    </div>
-                    <button class="buy_button" type="button" @click="addToCart(item)">Купить</button>
-                </div>
-                <div class="goods_empty" v-if="!filteredGoods.length">
-                    <p>Нет данных.</p>
-                    <p>Информация, по Вашему запросу, отсутствует.</p>
-                </div>
-            </section>
-        </main>
+        <v-header @change-is-cart-visible="isVisibleCart = !isVisibleCart">
+            <template v-slot:default>
+                <v-search v-model="searchLine" />
+            </template>
+            <template v-slot:cart>
+                <v-cart v-if="isVisibleCart" :goods="cartGoods" />
+            </template>
+        </v-header>
+        <v-goods v-bind:goods="filteredGoods" v-on:add="addToCart">
+        </v-goods>
+        <v-error v-if="errorMessage.length" :message="errorMessage" />
     </div>
 </body>
 

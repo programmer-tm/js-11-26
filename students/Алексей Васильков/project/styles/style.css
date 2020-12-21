@@ -125,15 +125,15 @@ a {
   align-items: flex-start;
   flex-direction: column;
   width: 400px;
-  position: absolute;
   color: black;
   background-color: palegoldenrod;
   border-radius: 2px;
   box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.2);
   padding: 5px 10px;
-  margin-top: 5px;
-  margin-left: -300px;
+  margin-top: 180px;
+  margin-left: 710px;
   box-sizing: border-box;
+  position: absolute;
 }
 
 .cart_drop__item {
@@ -224,6 +224,16 @@ a {
 }
 
 .goods_empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: medium;
+  color: red;
+  margin-top: 50px;
+}
+
+.error {
   display: flex;
   justify-content: center;
   align-items: center;
