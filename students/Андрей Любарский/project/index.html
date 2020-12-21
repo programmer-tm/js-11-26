@@ -12,11 +12,8 @@
 <main id="app">
     <header>
         <span class="logo">E-Shop</span>
-        <section class="searchLine">
-            <label for="search">Поиск</label>
-            <input type="text" id="search" v-model="searchInputValue">
-            <button @click="handleSearchButton">Найти</button>
-        </section>
+
+        <v-search @btn-srch="handleSearchButton"></v-search>
         <button type="button" class="cart-button" v-on:click="handleShowHideButton" v-if="isVisibleCart">Скрыть
             корзину
         </button>
@@ -25,24 +22,11 @@
         </button>
     </header>
 
-    <section class="catalogue">
-        <h3 v-if="!filteredGoods.length">Нет Данных</h3>
-        <div class="item" v-for="el in filteredGoods">
-            <div class="pic"></div>
-            <h4>{{ el.title }}</h4>
-            <p>Цена: {{ el.price }}</p>
-            <button class="add-button">Купить</button>
-        </div>
-    </section>
+    <v-cart v-bind:cart="cart" :is-visible-cart="isVisibleCart"></v-cart>
+
     <hr>
-    <div class="cart" v-show="isVisibleCart">
-        <div class="item" v-for="el in cart">
-            <div class="pic"></div>
-            <h4>{{ el.title }}</h4>
-            <p>Цена: {{ el.price }}</p>
-            <p>В корзине: {{ el.quantity }}</p>
-        </div>
-    </div>
+
+    <v-catalogue v-bind:goods="filteredGoods" @add="handleAdd"></v-catalogue>
 
 </main>
 </body>
