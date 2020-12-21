@@ -11,26 +11,26 @@
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
     <script src="static/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
     <script defer src="script.js"></script>
     <title>Vinyl Webshop</title>
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-light d-flex bg-light">
-            <a class="navbar-brand flex-grow-1">Vinyl Webshop</a>
-            <form class="d-flex searchbar">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <!-- <button class="btn btn-outline-success searchbutton" type="submit">Go!</button> -->
-            </form>
-            <form class="form-inline">
-                <button type="submit"><i class="fas fa-shopping-cart"></i></button>
-            </form>
-        </nav>
-    </header>
-    <main>
-        <div class="products_list"></div>
-    </main>
+    <div id="app">
+        <v-header
+            :cart-visible="isCartVisible"
+            :cart-items="cartItemsList"
+            :error="isError"
+            @search="setNewSearchValue"
+            @change-cart-visibility="isCartVisible = !isCartVisible"
+        ></v-header>
+        <v-product-list
+            :error="isError"
+            :products="filteredProducts"
+            @add="addProductToCart"
+        ></v-product-list>
+    </div>
 </body>
 
 </html>

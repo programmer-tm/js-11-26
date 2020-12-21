@@ -31,19 +31,44 @@ const sendRequest = (path) => {
   });
 }
 
+Vue.component('v-error', {
+  props: ['message'],
+  template: `
+    <div class="error">
+      Ошибка! {{ message }}
+    </div>
+  `,
+});
+
+Vue.component('v-search', {
+  props: ['value'],
+  template: `
+    <div>
+      <input type="text" :value="value" @input="$emit('input', $event.target.value)"  class="search" placeholder="Search..." />
+    </div>
+  `,
+});
+
+Vue.component('v-basket', {
+  props: ['goods'],
+  template: `
+    <div class="cart">
+        <div class="cart-item" v-for="item in goods">
+            <p class="cart-item__title">{{item.product_name}}</p>
+            <p>{{item.quantity}} x {{item.price}}</p>
+        </div>
+    </div>
+  `,
+});
+
+
 Vue.component('v-header', {
-  props: ['search', 'isCartVisible', 'cartGoods'],
   template: `
     <header class="header d-flex">
         <span class="logo">E-Shop</span>
-        <input type="text" v-model="search" class="search" placeholder="Search..." />
+        <slot />
         <button @click="handleClick" type="button" class="cart-button">Корзина</button>
-        <div v-if="isCartVisible" class="cart">
-            <div class="cart-item" v-for="item in cartGoods">
-                <p class="cart-item__title">{{item.product_name}}</p>
-                <p>{{item.quantity}} x {{item.price}}</p>
-            </div>
-        </div>
+        <slot name="basket" />
     </header>
   `,
   methods: {
@@ -98,7 +123,8 @@ new Vue({
     goods: [],
     basketGoods: [],
     searchValue: '',
-    isVisible: true,
+    isVisible: false,
+    errorMessage: '',
   },
   mounted() {
     this.fetchData();
@@ -111,6 +137,9 @@ new Vue({
           .then((data) => {
             this.goods = data;
             resolve();
+          })
+          .catch((error) => {
+            this.errorMessage = 'Не удалось получить список товаров!';
           });
       });
     },
@@ -122,6 +151,9 @@ new Vue({
             // this.amount = data.amount;
             // this.countGoods = data.countGoods;
             resolve();
+          })
+          .catch((error) => {
+            this.errorMessage = 'Не удалось получить содержимое корзины!';
           });
       });
     },
