@@ -131,3 +131,11 @@ a {
   text-align: center;
   width: 100%;
 }
+
+.error {
+  margin-top: 16px;
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+  font-weight: bold;
+}

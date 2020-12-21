@@ -33,7 +33,7 @@ Vue.component('v-header', {
   template: `
     <header class="header padding">
       <a href="index.html"><span class="logo">E-Shop</span></a>
-      <v-search v-model="search"/>
+      <slot />
       <button @click="handleIsCartVisible" type="button" class="cart-button">Корзина</button>
     </header>
   `,
@@ -161,9 +161,18 @@ Vue.component('v-cart-item', {
 });
 
 Vue.component('v-search', {
-  props: ['searchsearch'],
+  props: ['value'],
   template: `
-    <input type="search" class="search" placeholder="Search...">
+    <input :value="value" @input="$emit('input', $event.target.value)" type="search" class="search" placeholder="Search...">
+  `
+});
+
+Vue.component('v-error', {
+  props: ['message'],
+  template: `
+    <p class="error">
+      {{this.message}}
+    </p>
   `
 });
 
@@ -174,6 +183,7 @@ new Vue({
     cartGoods: [],
     searchValue: '',
     isVisibleCart: false,
+    errorMessage: '',
   },
   mounted() {
     this.fetchData();
@@ -187,8 +197,8 @@ new Vue({
             this.goods = data;
             resolve();
           })
-          .catch((data) => {
-            reject(data);
+          .catch(() => {
+            this.errorMessage = `Не удалось загрузить данные списка товаров!`;
           });
       })
     },
@@ -201,8 +211,8 @@ new Vue({
             // this.countGoods = data.countGoods;
             resolve();
           })
-          .catch((data) => {
-            reject(data);
+          .catch(() => {
+            alert(`Не удалось загрузить данные корзины!`)
           });
       })
     },

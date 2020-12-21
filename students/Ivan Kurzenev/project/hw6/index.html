@@ -12,12 +12,13 @@
 
 <body>
     <div id="app">
-        <v-header :search="searchValue" @display="isVisibleCartToggler"></v-header>
+        <v-header :search="searchValue" @display="isVisibleCartToggler">
+            <v-search v-model="searchValue" />
+        </v-header>
 
         <v-goods :total-price="totalPrice" :goods="filteredGoods" :cart-goods="cartGoods"
-            :is-cart-visible="isVisibleCart" @add="addToCart" @remove="deleteFromCart" @clear="clearCart">
-
-        </v-goods>
+            :is-cart-visible="isVisibleCart" @add="addToCart" @remove="deleteFromCart" @clear="clearCart"></v-goods>
+        <v-error v-if="errorMessage.length" :message="errorMessage"></v-error>
     </div>
 </body>
 
