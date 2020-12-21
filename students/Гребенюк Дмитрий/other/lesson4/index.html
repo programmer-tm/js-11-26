@@ -16,53 +16,53 @@
     </form>
 </body>
 <script>
-    //    const text = " ff'f'ffff'f 'sdsdsdsd' 'sdsdsdsghfhfgfgh' 'dfdf'd' 'dfdfdffhnn'd' " ;
-    //    const regexp = /\B'|'\B/g;
-    //    console.log(text.replace(regexp, '"'));
+        const text = " ff'f'ffff'f 'sdsdsdsd' 'sdsdsdsghfhfgfgh' 'dfdf'd' 'dfdfdffhnn'd' " ;
+        const regexp = /\B'|'\B/g;
+        console.log(text.replace(regexp, '"'));
 
-    class Form {
-        constructor() {
-
-
-
-            document.querySelector('#name').addEventListener('input', (event) => {
-                const value = event.target.value;
-                const regexp = /[a-z]/gi;
-                this.name = regexp.test(value);
-                console.log(this.name);
-
-            })
-            document.querySelector('#number').addEventListener('input', (event) => {
-                const value = event.target.value;
-                const regexp = /\+7\(\d\d\d\)\d\d\d\-\d\d\d\d/;
-                this.number = regexp.test(value);
-                console.log(this.number);
-
-            })
-            document.querySelector('#email').addEventListener('input', (event) => {
-                const value = event.target.value;
-                const regexp = /\w\w\w\w\w\w@\w\w\w\w.\w\w|\w\w.\w\w\w\w@\w\w\w\w.\w\w|\w\w-\w\w\w\w@\w\w\w\w.\w\w/gi
-                    
-                this.email = regexp.test(value);
-                console.log(this.email);
-            })
-            document.querySelector('#btn').addEventListener('click', () => {
-                if (!this.name){
-                    alert("введите буквы");
-                }
-                if (!this.number){
-                    alert("введите корректный номер телефона");
-                }
-                if (!this.email){
-                   alert("введите корректный адрес электронной почты");
-                }
-            })
-            
-            
-        };;
-
-    }
-    const form = new Form;
+//    class Form {
+//        constructor() {
+//
+//
+//
+//            document.querySelector('#name').addEventListener('input', (event) => {
+//                const value = event.target.value;
+//                const regexp = /[a-z]/gi;
+//                this.name = regexp.test(value);
+//                console.log(this.name);
+//
+//            })
+//            document.querySelector('#number').addEventListener('input', (event) => {
+//                const value = event.target.value;
+//                const regexp = /\+7\(\d\d\d\)\d\d\d\-\d\d\d\d/;
+//                this.number = regexp.test(value);
+//                console.log(this.number);
+//
+//            })
+//            document.querySelector('#email').addEventListener('input', (event) => {
+//                const value = event.target.value;
+//                const regexp = /\w\w\w\w\w\w@\w\w\w\w.\w\w|\w\w.\w\w\w\w@\w\w\w\w.\w\w|\w\w-\w\w\w\w@\w\w\w\w.\w\w/gi
+//                    
+//                this.email = regexp.test(value);
+//                console.log(this.email);
+//            })
+//            document.querySelector('#btn').addEventListener('click', () => {
+//                if (!this.name){
+//                    alert("введите буквы");
+//                }
+//                if (!this.number){
+//                    alert("введите корректный номер телефона");
+//                }
+//                if (!this.email){
+//                   alert("введите корректный адрес электронной почты");
+//                }
+//            })
+//            
+//            
+//        };;
+//
+//    }
+//    const form = new Form;
 
 </script>
 

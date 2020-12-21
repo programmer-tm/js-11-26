@@ -18,19 +18,13 @@ header {
 main {
     height: 100vh;
     border: 1px solid orange;
-    padding: 5vh 5vw;
+    padding: 2vh 2vw;
     margin: 0 5vw;
 }
 
-.cart {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 2vh 2vw;
-}
+
 
 .catalogue {
-    padding: 2vh 2vw;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -38,8 +32,6 @@ main {
 
 .item {
     border: 1px solid black;
-    /*max-width: 10vw;*/
-    /*max-height: 10vh;*/
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -67,4 +59,10 @@ main {
     height: 5vh;
     width: 8vw;
     border-radius: 2px;
+}
+
+.cart {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }

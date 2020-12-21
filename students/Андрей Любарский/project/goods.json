@@ -1,18 +1,18 @@
 [
   {
-    "title": "Ноутбук",
+    "product_name": "Ноутбук",
     "price": "30000"
   },
   {
-    "title": "Клавиатура",
+    "product_name": "Клавиатура",
     "price": "1000"
   },
   {
-    "title": "Мышь",
+    "product_name": "Мышь",
     "price": "500"
   },
   {
-    "title": "Монитор",
+    "product_name": "Монитор",
     "price": "10000"
   }
 ]

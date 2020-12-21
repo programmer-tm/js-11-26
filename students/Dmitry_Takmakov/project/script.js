@@ -34,179 +34,186 @@ const makeGETRequest = (filename) => {
     });
 }
 
-class Products {
-    constructor({
-        product_id,
-        title,
-        price,
-        cover
-    }) {
-        this.product_id = product_id;
-        this.title = title;
-        this.price = price;
-        this.cover = cover;
-    }
+Vue.component('v-nothing-found', {
+    template: `
+        <p>Ошибка! Данные не получены!</p>
+    `
+});
 
-    renderProduct() {
-        return `<div class="card">
-        <img src="${this.cover}" class="card-img-top" alt="${this.product_id}">
-        <div class="card-body" data-id="${this.product_id}">
-            <h5 class="card-title">${this.title}</h5>
-            <p class="card-text">Record price: $${this.price}</p>
-            <button type="button" class="btn btn-primary" name="add-to-basket-button"><i class="fas fa-cart-plus"></i> Add to cart</button>
+Vue.component('v-header', {
+    props: ['cartVisible', 'cartItems', 'search', 'error'],
+    template: `
+        <header>
+            <nav class="navbar navbar-light d-flex bg-light">
+                <a class="navbar-brand flex-grow-1">Vinyl Webshop</a>
+                <v-search
+                    @newSearch="newSearchInput"
+                ></v-search>
+                <button @click="cartClickHandler" type="submit"><i
+                        class="fas fa-shopping-cart"></i></button>
+                <div v-if="cartVisible" class="cart">
+                    <ul class="list-group mb-3">
+                        <v-basket
+                            v-for="item in cartItems"
+                            :key="item.product_id"
+                            :element="item"
+                        ></v-basket>
+                        <v-nothing-found v-if="error" />
+                    </ul>
+                </div>
+            </nav>
+        </header>
+    `,
+    methods: {
+        cartClickHandler() {
+            this.$emit('change-cart-visibility');
+        },
+        newSearchInput(data) {
+            this.$emit('search', data);
+        }
+    }
+});
+
+Vue.component('v-basket', {
+    props: ['element'],
+    template: `
+    <li class="d-flex justify-content-between lh-sm cart-item">
+        <div>
+            <img :src="element.cover" :alt="element.title">
         </div>
-    </div>`;
-    }
-}
+        <div>
+            <h6 class="my-0">{{ element.title }}</h6>
+        </div>
+        <span class="text-muted">{{ element.quantity }}</span> x
+        <span class="text-muted">$ {{ element.price }}</span>
+    </li>
+    `
+});
 
-class ProductsList {
-    constructor(basket) {
-        this.products = [];
-        this.filteredProducts = [];
-        this.basket = basket;
-        this.getData()
-            .then(() => {
-                this.renderProductsList();
-                this.getProductsListTotalPrice();
+Vue.component('v-search', {
+    template: `
+    <form class="d-flex searchbar">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+            @input="searchInput">
+    </form>
+    `,
+    methods: {
+        searchInput() {
+            this.$emit('newSearch', this.$el.lastChild.value);
+        }
+    }
+});
+
+Vue.component('v-product-list', {
+    props: ['products', 'error'],
+    template: `
+        <main>
+            <div class="products_list">
+                    <v-product
+                        v-for="product in products"
+                        :key="product.product_id"
+                        :element="product"
+                        @addProductToCart="addToCartHandler"
+                    ></v-product>
+                <v-nothing-found v-if="error" />
+                <div v-if="!products.length" class="empty-products">
+                    Ничего не найдено :(
+                </div>
+            </div>
+        </main>
+    `,
+    methods: {
+        addToCartHandler(data) {
+            this.$emit('add', data);
+        }
+    }
+});
+
+Vue.component('v-product', {
+    props: ['element'],
+    template: `
+        <div class="card">
+            <img :src="element.cover" class="card-img-top" :alt="element.product_id">
+            <div class="card-body">
+                <h5 class="card-title">{{ element.title }}</h5>
+                <p class="card-text">Record price: $ {{ element.price }}</p>
+                <button type="button" class="btn btn-primary" @click="addProductToCart"><i
+                        class="fas fa-cart-plus"></i> Add to cart</button>
+            </div>
+        </div>
+    `,
+    methods: {
+        addProductToCart() {
+            this.$emit('addProductToCart', this.element);
+        }
+    }
+});
+
+new Vue({
+    el: '#app',
+    data: {
+        products: [],
+        cartItemsList: [],
+        searchLine: '',
+        isCartVisible: false,
+        isError: false
+    },
+    mounted() {
+        this.getData();
+        this.getCartData();
+    },
+    methods: {
+        getData() {
+            return new Promise((resolve, reject) => {
+                makeGETRequest('products.json')
+                    .then((data) => {
+                        this.products = data;
+                        resolve();
+                    })
+                    .catch(() => {
+                        this.isError = true;
+                    });
             });
-
-        document.querySelector('.products_list').addEventListener('click', (event) => {
-            if (event.target.name === 'add-to-basket-button') {
-                let pid = event.target.parentElement.dataset.id;
-                let product = this.products.find((product) => product.product_id === parseInt(pid));
-                if (product) {
-                    this.addToBasket(product);
-                } else {
-                    console.error(`Can't find the product with ID ${pid}!`);
-                }
+        },
+        getCartData() {
+            return new Promise((resolve, reject) => {
+                makeGETRequest('basket_items.json')
+                    .then((data) => {
+                        this.cartItemsList = data.contents;
+                        resolve();
+                    })
+                    .catch(() => {
+                        this.isError = true;
+                    });
+            });
+        },
+        addProductToCart(product) {
+            let id = this.cartItemsList.findIndex((cartItem) => cartItem.product_id === product.product_id);
+            if (id > -1) {
+                this.cartItemsList[id].quantity += 1;
+            } else {
+                this.cartItemsList.push(product);
+                this.cartItemsList[this.cartItemsList.length - 1].quantity = 1;
             }
-        });
-
-        document.querySelector('.searchbar').addEventListener('input', (event) => {
-            let filterValue = event.target.value;
-            this.filterProducts(filterValue);
-        });
-    }
-
-    filterProducts(value) {
-        const regularExpression = new RegExp(value.trim(), 'i');
-        this.filteredProducts = this.products.filter(product => regularExpression.test(product.title));
-        this.renderProductsList();
-    }
-
-    getData() {
-        return new Promise((resolve, reject) => {
-            makeGETRequest('products.json')
-                .then((data) => {
-                    this.products = data;
-                    this.filteredProducts = data;
-                    resolve();
-                });
-        });
-    }
-
-    addToBasket(product) {
-        this.basket.addProductToBasket(product);
-    }
-
-    renderProductsList() {
-        let productsList = this.filteredProducts.map(product => {
-            let productItem = new Products(product);
-            return productItem.renderProduct();
-        });
-        document.querySelector('.products_list').innerHTML = productsList.join("");
-    }
-
-    getProductsListTotalPrice() {
-        let totalPrice = 0;
-        for (let i = 0; i < this.products.length; i++) {
-            const element = this.products[i].price;
-            totalPrice += element;
+            console.log(this.cartItemsList);
+        },
+        removeProductFromCart(product_id) {
+            this.cartItemsList = this.cartItemsList.filter((product) => product.product_id !== parseInt(product_id));
+            console.log(this.cartItemsList);
+        },
+        setNewSearchValue(value) {
+            this.searchLine = value;
         }
-        console.log(totalPrice);
-    }
-}
-
-class Basket {
-    constructor() {
-        this.basketItemsList = [];
-        this.basketTotalPrice = 0;
-        this.itemsCount = 0;
-    }
-
-    getData() {
-        return new Promise((resolve, reject) => {
-            makeGETRequest('basket_items.json')
-                .then((data) => {
-                    this.basketTotalPrice = data.totalPrice;
-                    this.itemsCount = data.itemsCount;
-                    this.basketItemsList = data.contents;
-                    console.log(this);
-                    resolve();
-                });
-        });
-    }
-
-    addProductToBasket(product) {
-        let id = this.basketItemsList.findIndex((basketItem) => basketItem.product_id === product.product_id);
-        if (id > -1) {
-            this.basketItemsList[id].quantity += 1;
-        } else {
-            this.basketItemsList.push(product);
-            this.basketItemsList[this.basketItemsList.length - 1].quantity = 1;
+    },
+    computed: {
+        filteredProducts() {
+            const regularExpression = new RegExp(this.searchLine.trim(), 'i');
+            return this.products.filter((product) => regularExpression.test(product.title));
+        },
+        totalPrice() {
+            return this.products.reduce((accumulated, current) => {
+                return accumulated + current.price;
+            }, 0);
         }
-        console.log(this.basketItemsList);
     }
-
-    removeProductFromBasket(product_id) {
-        this.basketItemsList = this.basketItemsList.filter((product) => product.product_id !== parseInt(product_id));
-    }
-
-    getTotalBasketItemsPrice() {
-
-    }
-
-    renderBasket() {
-
-    }
-
-    makeOrder() {
-
-    }
-}
-
-class BasketItem {
-    constructor({
-        product_id,
-        title,
-        price,
-        cover,
-        quantity
-    }) {
-        this.product_id = product_id;
-        this.title = title;
-        this.price = price;
-        this.cover = cover;
-        this.quantity = quantity;
-    }
-
-    getBasketItemPrice() {
-
-    }
-
-    deleteBasketItem() {
-
-    }
-
-    updateBasketItem() {
-
-    }
-
-    renderBasketItem() {
-
-    }
-}
-
-const basket = new Basket();
-const productsList = new ProductsList(basket);
-basket.getData();
+});

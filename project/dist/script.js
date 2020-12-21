@@ -1,6 +1,7 @@
-const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
 
-const sendRequest = (path) => {
+const API = 'http://localhost:3000/api';
+
+const sendRequest = (path, method = 'GET', body = {}) => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
@@ -22,27 +23,52 @@ const sendRequest = (path) => {
       }
     }
 
-    xhr.open('GET', `${API}/${path}`);
+    xhr.open(method, `${API}/${path}`);
 
-    // xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.send();
+    xhr.send(JSON.stringify(body));
   });
 }
 
+Vue.component('v-error', {
+  props: ['message'],
+  template: `
+    <div class="error">
+      Ошибка! {{ message }}
+    </div>
+  `,
+});
+
+Vue.component('v-search', {
+  props: ['value'],
+  template: `
+    <div>
+      <input type="text" :value="value" @input="$emit('input', $event.target.value)"  class="search" placeholder="Search..." />
+    </div>
+  `,
+});
+
+Vue.component('v-basket', {
+  props: ['goods'],
+  template: `
+    <div class="cart">
+        <div class="cart-item" v-for="item in goods">
+            <p class="cart-item__title">{{item.title}}</p>
+            <p>{{item.quantity}} x {{item.price}}</p>
+        </div>
+    </div>
+  `,
+});
+
+
 Vue.component('v-header', {
-  props: ['search', 'isCartVisible', 'cartGoods'],
   template: `
     <header class="header d-flex">
         <span class="logo">E-Shop</span>
-        <input type="text" v-model="search" class="search" placeholder="Search..." />
+        <slot />
         <button @click="handleClick" type="button" class="cart-button">Корзина</button>
-        <div v-if="isCartVisible" class="cart">
-            <div class="cart-item" v-for="item in cartGoods">
-                <p class="cart-item__title">{{item.product_name}}</p>
-                <p>{{item.quantity}} x {{item.price}}</p>
-            </div>
-        </div>
+        <slot name="basket" />
     </header>
   `,
   methods: {
@@ -79,7 +105,7 @@ Vue.component('v-item', {
   props: ['element'],
   template: `
     <div class="item">
-        <h4>{{element.product_name}}</h4>
+        <h4>{{element.title}}</h4>
         <p>{{element.price}}</p>
         <button type="button" v-on:click="addToBasket">Add to basket</button>
     </div>
@@ -97,7 +123,8 @@ new Vue({
     goods: [],
     basketGoods: [],
     searchValue: '',
-    isVisible: true,
+    isVisible: false,
+    errorMessage: '',
   },
   mounted() {
     this.fetchData();
@@ -106,43 +133,58 @@ new Vue({
   methods: {
     fetchData() {
       return new Promise((resolve, reject) => {
-        sendRequest('catalogData.json')
+        sendRequest('catalog')
           .then((data) => {
             this.goods = data;
             resolve();
+          })
+          .catch((error) => {
+            this.errorMessage = 'Не удалось получить список товаров!';
           });
       });
     },
     fetchBasketData() {
       return new Promise((resolve, reject) => {
-        sendRequest('getBasket.json')
+        sendRequest('basket')
           .then((data) => {
-            this.basketGoods = data.contents;
-            // this.amount = data.amount;
-            // this.countGoods = data.countGoods;
+            this.basketGoods = data;
             resolve();
+          })
+          .catch((error) => {
+            this.errorMessage = 'Не удалось получить содержимое корзины!';
           });
       });
     },
     addToBasket(item) {
-      const index = this.basketGoods.findIndex((basketItem) => basketItem.id_product === item.id_product);
-      if (index > -1) {
-        this.basketGoods[index].quantity += 1;
-        // this.basketGoods[index] = { ...this.basketGoods[index], quantity: this.basketGoods[index].quantity + 1 };
-      } else {
-        this.basketGoods.push(item);
-      }
-      console.log(this.basketGoods);
+      sendRequest('basket', 'POST', item)
+        .then((result) => {
+          console.log('Result', result);
+          if (!result.success) {
+            console.log('addToBasket Error');
+            return;
+          }
+
+          const index = this.basketGoods.findIndex((basketItem) => basketItem.id === item.id);
+          if (index > -1) {
+            this.basketGoods[index].quantity += 1;
+            // this.basketGoods[index] = { ...this.basketGoods[index], quantity: this.basketGoods[index].quantity + 1 };
+          } else {
+            this.basketGoods.push({ ...item, quantity: 1 });
+          }
+        })
+        .catch((error) => {
+          this.errorMessage = 'Не удалось добавить список товаров!';
+        });
     },
     removeItem(id) {
-      this.basketGoods = this.basketGoods.filter((goodsItem) => goodsItem.id_product !== parseInt(id));
+      this.basketGoods = this.basketGoods.filter((goodsItem) => goodsItem.id !== parseInt(id));
       console.log(this.basketGoods);
     },
   },
   computed: {
     filteredGoods() {
       const regexp = new RegExp(this.searchValue.trim(), 'i');
-      return this.goods.filter((goodsItem) => regexp.test(goodsItem.product_name));
+      return this.goods.filter((goodsItem) => regexp.test(goodsItem.title));
     },
     totalPrice() {
       return this.goods.reduce((acc, curVal) => {
@@ -159,4 +201,3 @@ new Vue({
     // }
   },
 })
-
