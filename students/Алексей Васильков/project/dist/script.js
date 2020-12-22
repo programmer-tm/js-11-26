@@ -40,7 +40,9 @@ Vue.component('v-header', {
         <header class="header center">
             <a class="logo" href="#">E-Shop</a>
             <slot />
+            <nav>
             <button class="cart_button" @click="handlerClick" type="button">Корзина</button>
+            </nav>
             <slot name="cart" />
         </header>
     `,

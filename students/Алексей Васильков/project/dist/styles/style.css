@@ -84,6 +84,7 @@ a {
   color: maroon;
   box-sizing: border-box;
   transition: all 0.1s;
+  cursor: pointer;
 }
 
 .search_button:hover {
@@ -229,6 +230,7 @@ a {
   padding: 5px 40px;
   margin: 10px;
   transition: all 0.1s;
+  cursor: pointer;
 }
 
 .goods .buy_button:hover {
