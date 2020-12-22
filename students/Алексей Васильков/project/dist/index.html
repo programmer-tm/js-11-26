@@ -17,7 +17,7 @@
                 <v-search v-model="searchLine" />
             </template>
             <template v-slot:cart>
-                <v-cart v-if="isVisibleCart" :goods="cartGoods" />
+                <v-cart v-if="isVisibleCart" :goods="cartGoods" @delete="removeItem" />
             </template>
         </v-header>
         <v-goods v-bind:goods="filteredGoods" v-on:add="addToCart">
