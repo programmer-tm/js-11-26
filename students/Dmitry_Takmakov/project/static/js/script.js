@@ -1,6 +1,6 @@
 'use strict';
 
-const API_URL = 'https://raw.githubusercontent.com/DmitryTakmakov/js-11-26/master/students/Dmitry_Takmakov/project/json/'
+const API_URL = 'https://raw.githubusercontent.com/DmitryTakmakov/js-11-26/master/students/Dmitry_Takmakov/project/static/json/'
 
 const makeGETRequest = (filename) => {
     return new Promise((resolve, reject) => {
