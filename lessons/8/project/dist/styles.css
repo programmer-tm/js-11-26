@@ -1,31 +1,30 @@
-* {
-    margin: 0;
-    padding: 0;
+*, *::after, *::before {
     box-sizing: border-box;
-    background-color:#fae9ce;
-    font-family: Roboto;
+}
+
+body {
+    margin: 0;
+    font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f9fafc;
 }
 
 header {
     display: flex;
     background: #fff;
     justify-content: space-between;
-    padding: 25px;
+    padding: 20px;
     box-shadow: 0 3px 6px rgba(0,0,0,.2);
-}
-
-.logo {
-    background: #fff;
-    font-size: 24px;
-    font-weight: bold;
-    color: #FF7F50;
 }
 
 .cart-button {
     border: none;
     border-radius: 20px;
     padding: 7px 20px;
-    background: #FF7F50;
+    background: #0b5bb8;
     font-size: 16px;
     font-weight: 600;
     font-family: inherit;
@@ -35,11 +34,11 @@ header {
 
 .cart-button:focus {
     outline: none;
-    background: #f56c3a;
+    background: #0c50a0;
 }
 
 .cart-button:hover {
-    background: #f56c3a;
+    background: #3b7eb9;
 }
 
 .goods {
@@ -57,10 +56,6 @@ header {
     background-color: #fff;
     border-radius: 5px;
     padding: 10px;
-}
-
-h4, p {
-    background-color: #fff;
 }
 
 .cart {
