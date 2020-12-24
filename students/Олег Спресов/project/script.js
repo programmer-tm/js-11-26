@@ -31,6 +31,98 @@ const sendRequest = (path) => {
   });
 }
 
+Vue.component('v-error', {
+  props: ['message'],
+  template: `
+    <div class="error">
+      Ошибка! {{ message }}
+    </div>
+  `,
+});
+
+Vue.component('v-search', {
+  props: ['value'],
+  template: `
+    <div>
+      <input type="text" :value="value" @input="$emit('input', $event.target.value)"  class="search" placeholder="Search..." />
+    </div>
+  `,
+});
+
+Vue.component('v-basket', {
+  props: ['goods'],
+  template: `
+
+    <div class="cart">
+        <div class="cart-item" v-for="item in goods">
+            <img :src="item.image" alt="product_basket">
+            <p class="cart-item__title">{{item.title}}</p>
+            <p>{{item.quantity}} x {{item.price}}</p>
+        </div>
+    </div>
+  `,
+});
+
+
+Vue.component('v-header', {
+  template: `
+    <header class="header">
+        <a class="logo" href="#"><img src="img/logo.svg" alt="logo"></a>
+        <slot />
+        <div class="basket">
+            <button @click="handleClick" type="button" class="cart-button">Корзина <i class="fa fa-shopping-cart"></i></button>
+        </div>    
+        <slot name="basket" />
+    </header>
+  `,
+  methods: {
+    handleClick() {
+      this.$emit('change-is-cart-visible');
+    }
+  }
+});
+
+Vue.component('v-goods', {
+  props: ['goods'],
+  template: `
+    <main>
+        <section class="goods">
+            <v-item
+              v-for="item in goods"
+              v-bind:element="item"
+              v-on:addToBasket="handleAddToBasket"
+            />
+            <div v-if="!goods.length" class="goods-empty">
+                Нет данных
+            </div>
+        </section>
+    </main>
+  `,
+  methods: {
+    handleAddToBasket(data) {
+      this.$emit('add', data);
+    },
+  }
+});
+
+Vue.component('v-item', {
+  props: ['element'],
+  template: `
+    <div class="item">
+        <img :src="element.image" alt="product">
+        <h4 class="prod_name">{{element.title}}</h4>
+        <p class="prod_price">{{element.price}}</p>
+        <button type="button" v-on:click="addToBasket" class="add_cart">
+                        Добавить в <i class="fa fa-shopping-cart"></i></button>
+    </div>
+  `,
+  methods: {
+    addToBasket() {
+      this.$emit('addToBasket', this.element);
+    }
+  }
+});
+
 new Vue({
   el: '#app',
   data: {
@@ -38,6 +130,7 @@ new Vue({
     basketGoods: [],
     searchValue: '',
     isVisible: false,
+    errorMessage: '',
   },
   mounted() {
     this.fetchData();
@@ -50,6 +143,9 @@ new Vue({
           .then((data) => {
             this.goods = data;
             resolve();
+          })
+          .catch((error) => {
+            this.errorMessage = 'Не удалось получить список товаров!';
           });
       });
     },
@@ -61,6 +157,9 @@ new Vue({
             // this.amount = data.amount;
             // this.countGoods = data.countGoods;
             resolve();
+          })
+          .catch((error) => {
+            this.errorMessage = 'Не удалось получить содержимое корзины!';
           });
       });
     },
@@ -78,7 +177,7 @@ new Vue({
     removeItem(id) {
       this.basketGoods = this.basketGoods.filter((goodsItem) => goodsItem.id_product !== parseInt(id));
       console.log(this.basketGoods);
-    }
+    },
   },
   computed: {
     filteredGoods() {
@@ -100,6 +199,83 @@ new Vue({
     // }
   },
 })
+
+
+
+
+
+
+
+//Часть Кода к ДЗ_5 вставлять после строки 32
+// new Vue({
+//   el: '#app',
+//   data: {
+//     goods: [],
+//     basketGoods: [],
+//     searchValue: '',
+//     isVisible: false,
+//   },
+//   mounted() {
+//     this.fetchData();
+//     this.fetchBasketData();
+//   },
+//   methods: {
+//     fetchData() {
+//       return new Promise((resolve, reject) => {
+//         sendRequest('catalogData.json')
+//           .then((data) => {
+//             this.goods = data;
+//             resolve();
+//           });
+//       });
+//     },
+//     fetchBasketData() {
+//       return new Promise((resolve, reject) => {
+//         sendRequest('getBasket.json')
+//           .then((data) => {
+//             this.basketGoods = data.contents;
+//             // this.amount = data.amount;
+//             // this.countGoods = data.countGoods;
+//             resolve();
+//           });
+//       });
+//     },
+//     addToBasket(item) {
+//       const index = this.basketGoods.findIndex((basketItem) => basketItem.id_product === item.id_product);
+//       if (index > -1) {
+//         this.basketGoods[index].quantity += 1;
+//         // this.basketGoods[index] = { ...this.basketGoods[index], quantity: this.basketGoods[index].quantity + 1 };
+//       } else {
+//         item.quantity = 1;
+//         this.basketGoods.push(item);
+//       }
+//       console.log(this.basketGoods);
+//     },
+//     removeItem(id) {
+//       this.basketGoods = this.basketGoods.filter((goodsItem) => goodsItem.id_product !== parseInt(id));
+//       console.log(this.basketGoods);
+//     }
+//   },
+//   computed: {
+//     filteredGoods() {
+//       const regexp = new RegExp(this.searchValue.trim(), 'i');
+//       return this.goods.filter((goodsItem) => regexp.test(goodsItem.title));
+//     },
+//     totalPrice() {
+//       return this.goods.reduce((acc, curVal) => {
+//         return acc + curVal.price;
+//       }, 0);
+//     },
+//     // someComputedProp: {
+//     //   get() {
+//     //     return this.name.toUpperCaes();
+//     //   },
+//     //   set(value) {
+//     //     this.name = value.split('/');
+//     //   }
+//     // }
+//   },
+// })
 
 
 
