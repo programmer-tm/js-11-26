@@ -24,6 +24,7 @@
             :error="isError"
             @search="setNewSearchValue"
             @change-cart-visibility="isCartVisible = !isCartVisible"
+            @delete-item="removeProductFromCart"
         ></v-header>
         <v-product-list
             :error="isError"

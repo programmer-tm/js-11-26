@@ -62,6 +62,7 @@ Vue.component('v-header', {
                             v-for="item in cartItems"
                             :key="item.product_id"
                             :element="item"
+                            @delete="deleteHandler"
                         ></v-basket>
                         <v-nothing-found v-if="error" />
                     </ul>
@@ -75,6 +76,9 @@ Vue.component('v-header', {
         },
         newSearchInput(data) {
             this.$emit('search', data);
+        },
+        deleteHandler(data) {
+            this.$emit('delete-item', data);
         }
     }
 });
@@ -185,7 +189,7 @@ new Vue({
             return new Promise((resolve, reject) => {
                 makeRequest('basket')
                     .then((data) => {
-                        this.cartItemsList = data.contents;
+                        this.cartItemsList = data;
                         resolve();
                     })
                     .catch(() => {
@@ -214,7 +218,7 @@ new Vue({
                 });
         },
         removeProductFromCart(product_id) {
-            sendRequest(`basket/${product_id}`, 'DELETE')
+            makeRequest(`basket/${product_id}`, 'DELETE')
                 .then((res) => {
                     console.log('Result: ', res);
                     if (!res.success) {
