@@ -9,43 +9,24 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="script.js" defer></script>
 </head>
+
 <body>
-
     <div id="app">
-        <div class="header">
-            <a class="logo" href="#"><img src="img/logo.svg" alt="logo"></a>
-            <input type="text" v-model="searchValue" class="search" placeholder="Search..." />
-            <!--<input type="text" class="search" placeholder="Search..." />-->
-            <div class="basket">
-                <button @click="isVisible = !isVisible" type="button" class="cart-button">Корзина <i class="fa fa-shopping-cart"></i></button>
-            </div>
-            <div v-if="isVisible" class="cart">
-                <div class="cart-item" v-for="item in basketGoods">
-                    <img :src="item.image" alt="product_basket">
-                    <p class="cart-item__title">{{item.title}}</p>
-                    <p>{{item.quantity}} x {{item.price}}</p>
-                </div>
-            </div>
+        <v-header @change-is-cart-visible="isVisible = !isVisible">
+            <template v-slot:default>
+                <v-search v-model="searchValue"/>
+            </template>
 
-        </div>
-        <main>
-            <!--<section class="goods">-->
-            <!--</section>-->
-            <section class="goods">
-                <div class="item" v-for="item in filteredGoods">
-                    <img :src="item.image" alt="product">
-                    <h4 class="prod_name">{{item.title}}</h4>
-                    <p class="prod_price">{{item.price}}</p>
-                    <button type="button" v-on:click="addToBasket(item)" class="add_cart">
-                        Добавить в <i class="fa fa-shopping-cart"></i></button>
-                    <!--<button type="button" v-on:click="addToBasket(item)">Add to basket</button>-->
-                </div>
-                <div v-if="!filteredGoods.length" class="goods-empty">
-                    Нет данных
-                </div>
-            </section>
-        </main>
+            <template v-slot:basket>
+                <v-basket v-if="isVisible" :goods="basketGoods" @delete="removeItem" />
+            </template>
+        </v-header>
+        <v-goods
+            v-bind:goods="filteredGoods"
+            v-on:add="addToBasket"
+        ></v-goods>
+        <v-error v-if="errorMessage.length" :message="errorMessage" />
     </div>
-
 </body>
+
 </html>
