@@ -1,6 +1,9 @@
 const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
+const {
+    clear
+} = require('console');
 
 const app = express();
 
@@ -63,7 +66,6 @@ app.post('/api/dataCart', (req, res) => {
                 success: true
             });
         });
-
     });
 });
 
@@ -79,7 +81,11 @@ app.delete('/api/dataCart/:id', (req, res) => {
 
         const id = parseInt(req.params.id);
 
-        basket = basket.filter((goodsItem) => goodsItem.id_product !== id);
+        if (id === 0) {
+            basket = [];
+        } else {
+            basket = basket.filter((goodsItem) => goodsItem.id_product !== id);
+        }
 
         fs.writeFile('./dataCart.json', JSON.stringify(basket), (err) => {
             if (err) {
@@ -92,7 +98,6 @@ app.delete('/api/dataCart/:id', (req, res) => {
                 success: true
             });
         });
-
     });
 });
 

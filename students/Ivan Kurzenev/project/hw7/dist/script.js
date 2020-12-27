@@ -83,8 +83,8 @@ Vue.component('v-goods', {
     handleDelete(data) {
       this.$emit('remove', data);
     },
-    handleClearCart() {
-      this.$emit('clear');
+    handleClearCart(data) {
+      this.$emit('clear', data);
     }
   },
 });
@@ -136,7 +136,7 @@ Vue.component('v-cart', {
       this.$emit('deleteElement', data);
     },
     clearCart() {
-      this.$emit('clear')
+      this.$emit('clear', 0)
     }
   },
 })
@@ -159,7 +159,7 @@ Vue.component('v-cart-item', {
   `,
   methods: {
     remove() {
-      this.$emit('deleteElement', this.element);
+      this.$emit('deleteElement', this.element.id_product);
     },
   },
 });
@@ -223,7 +223,7 @@ new Vue({
         .then((result) => {
           console.log('Result', result);
           if (!result.success) {
-            console.log('addToBasket Error');
+            console.log('addToCart Error');
             return;
           }
 
@@ -231,16 +231,18 @@ new Vue({
           if (index > -1) {
             this.cartGoods[index].quantity += 1;
           } else {
-            item.quantity = 1;
-            this.cartGoods.push(item);
+            this.cartGoods.push({
+              ...item,
+              quantity: 1
+            });
           }
         })
         .catch((error) => {
           this.errorMessage = 'Не удалось добавить элемент в корзину!';
         });
     },
-    deleteFromCart(item) {
-      sendRequest('dataCart', 'POST', item)
+    deleteFromCart(id) {
+      sendRequest(`dataCart/${id}`, 'DELETE')
         .then((result) => {
           console.log('Result', result);
           if (!result.success) {
@@ -248,25 +250,25 @@ new Vue({
             return;
           }
 
-          this.cartGoods = this.cartGoods.filter((element) => element.id_product !== item.id_product);
+          this.cartGoods = this.cartGoods.filter((element) => element.id_product !== parseInt(id));
         })
         .catch((error) => {
-          this.errorMessage = 'Не удалось удалить элемент корзины!';
+          this.errorMessage = 'Не удалось удалить элемент из корзины!';
         });
     },
-    clearCart() {
-      sendRequest('dataCart', 'POST')
+    clearCart(id) {
+      sendRequest(`dataCart/${id}`, 'DELETE')
         .then((result) => {
           console.log('Result', result);
           if (!result.success) {
-            console.log('deleteFromCart Error');
+            console.log('clearCart Error');
             return;
           }
 
           this.cartGoods = [];
         })
         .catch((error) => {
-          this.errorMessage = 'Не удалось удалить элемент корзины!';
+          this.errorMessage = 'Не удалось очистить корзину!';
         });
     },
     isVisibleCartToggler() {
