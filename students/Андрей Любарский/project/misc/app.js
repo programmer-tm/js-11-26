@@ -6,15 +6,15 @@ const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-a
 
 Vue.component('v-search', {
     template: `
-        <section class="searchLine">
-            <label for="search">Поиск</label>
-            <input type="text" id="search" v-model="searchInput">
-            <button @click="handleSearchButton">Найти</button>
-        </section>
+      <section class="searchLine">
+      <label for="search">Поиск</label>
+      <input type="text" id="search" v-model="searchInput">
+      <button @click="handleSearchButton">Найти</button>
+      </section>
     `,
-    data(){
+    data() {
         return {
-            searchInput:''
+            searchInput: ''
         }
     },
     methods: {
@@ -26,11 +26,11 @@ Vue.component('v-search', {
 
 
 Vue.component('v-cart', {
-    template: `      
-        <section class="cart" v-show="isVisibleCart">
-        <h3 v-if="!cart.length">Нет Данных</h3>
-        <v-cart-item v-for="el in cart" v-bind:item="el" />
-        </section>
+    template: `
+      <section class="cart" v-show="isVisibleCart">
+      <h3 v-if="!cart.length">Нет Данных</h3>
+      <v-cart-item v-for="el in cart" v-bind:item="el"/>
+      </section>
     `,
 
     props: {
@@ -41,26 +41,33 @@ Vue.component('v-cart', {
 
 Vue.component('v-cart-item', {
     template: `
-        <div class="item">
-            <div class="pic"></div>
-            <h4>{{ item.product_name }}</h4>
-            <p v-if="item.price">Цена: {{ item.price }}</p>
-            <p> В корзине: {{ item.quantity }}</p>
-            <button class="cart-button">Убрать из корзины</button>
-        </div>
+      <div class="item">
+      <div class="pic"></div>
+      <h4>{{ item.product_name }}</h4>
+      <p v-if="item.price">Цена: {{ item.price }}</p>
+      <p> В корзине: {{ item.quantity }}</p>
+      <button class="cart-button">Убрать из корзины</button>
+      </div>
     `,
     props: {
-        item: Object
+        item: Object,
+        required: false,
+        default: {
+            id: -1,
+            product_name: 'Нет данных',
+            price: 0,
+            quantity: 0
+        }
     }
 })
 
 
 Vue.component('v-catalogue', {
     template: `
-        <section class="catalogue">
-            <h3 v-if="!goods.length">Нет Данных</h3>
-            <v-catalogue-item v-if="goods.length" v-for="el in goods" v-bind:item="el" v-on:addToCart="handleAddToCart" />
-        </section>    
+      <section class="catalogue">
+      <h3 v-if="!goods.length">Нет Данных</h3>
+      <v-catalogue-item v-if="goods.length" v-for="el in goods" v-bind:item="el" v-on:addToCart="handleAddToCart"/>
+      </section>
     `,
 
     props: {
@@ -77,13 +84,13 @@ Vue.component('v-catalogue', {
 
 Vue.component('v-catalogue-item', {
     template: `
-        <div class="item">
-            <div class="pic"></div>
-            <h4>{{ item.product_name }}</h4>
-            <p v-if="item.price">Цена: {{ item.price }}</p>
-            <p v-else>Цена по запросу</p>
-            <button class="add-button" v-on:click="handleClick">Купить</button>
-        </div>
+      <div class="item">
+      <div class="pic"></div>
+      <h4>{{ item.product_name }}</h4>
+      <p v-if="item.price">Цена: {{ item.price }}</p>
+      <p v-else>Цена по запросу</p>
+      <button class="add-button" v-on:click="handleClick">Купить</button>
+      </div>
     `,
 
     props: {
