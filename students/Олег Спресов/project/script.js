@@ -1,3 +1,18 @@
+import './css/style.css';
+import './img/logo.svg'
+import './img/arm-chair.jpg';
+import './img/lamp.jpg';
+import './img/divan.jpg';
+import './img/torsher.jpg';
+import './img/vase.jpg';
+import './img/clock.jpg';
+import './img/stupka.jpg';
+import './img/kettle.jpg';
+import './img/chair.jpg';
+import './img/suspended_lamp.jpg';
+
+
+
 const API = 'http://localhost:3000/api';
 
 const sendRequest = (path, method = 'GET', body = {}) => {
@@ -68,6 +83,7 @@ Vue.component('v-header', {
   template: `
     <header class="header">
         <a class="logo" href="#"><img src="img/logo.svg" alt="logo"></a>
+        
         <slot />
         <div class="basket">
             <button @click="handleClick" type="button" class="cart-button">Корзина <i class="fa fa-shopping-cart"></i></button>
