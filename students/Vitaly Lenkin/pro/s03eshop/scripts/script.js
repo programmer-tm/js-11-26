@@ -1,43 +1,40 @@
+//
 //... Declarations
 var itemList = document.querySelector('.goods');
 var filter = document.getElementById('filter');
 var user = document.getElementById('user');
-const API = 'https://raw.githubusercontent.com/vl-gbr/js-11-26/master/students/Vitaly%20Lenkin/pro/s03eshop/data';
-
 filter.addEventListener('keyup', filterItems);
 user.addEventListener('click', login);
+const API = 'https://raw.githubusercontent.com/vl-gbr/js-11-26/master/students/Vitaly%20Lenkin/pro/s03eshop/data';
 
-
-//!
 //... Data Base
 var goods = [];
 
-function getData (dataPath) {
+//... Классический вариант XMLHttpRequest, с промисами
+const sendRequest = (path) => {
+   return new Promise((resolve, reject) => {
 
-   var xhttp = new XMLHttpRequest();
-   //!... При синхронизации Таймаут устанавливать нельзя
-   // xhttp.timeout = 10000;
-   // xhttp.ontimeout = () => {
-   //    console.log('timeout!');
-   // }
-   let responce = {};
-   xhttp.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-         // var response;
-         response = JSON.parse(xhttp.response);
-         // goods = response.goods;      
-      } 
-   };
-
-   // xhttp.open("GET", "https://raw.githubusercontent.com/vl-gbr/js-11-26/master/students/Vitaly%20Lenkin/pro/s03eshop/data/goods.json", true);
-   //! Параметр 'false' используется для синхронизации асинхронной функции (устаревший метод). [Deprecation] Synchronous XMLHttpRequest...
-   xhttp.open("GET", `${API}/${dataPath}`, false);
-   //!... При синхронизации responseType устанавливать нельзя
-   // xhttp.responseType = 'json';         
-   xhttp.send();
-   
-   return response.goods;
-};
+      const xhr = new XMLHttpRequest();
+      xhr.timeout = 10000;
+      xhr.ontimeout = () => {
+         console.log('timeout!');
+      }
+      xhr.onreadystatechange = () => {
+         // console.log('ready state change', xhr.readyState);
+         if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+               resolve(JSON.parse(xhr.response));
+            } else {
+               console.log('Error!', xhr.response);
+               reject(xhr.response);
+            }
+         }
+      }
+      xhr.open('GET', `${API}/${path}`);
+      // xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send();
+   });
+}
 
 // Filter Items
 function filterItems(e){
@@ -60,7 +57,7 @@ function filterItems(e){
 //
 //... класс Продукт
 class ProductClass {
-   
+
    constructor({
       title,
       price,
@@ -70,23 +67,23 @@ class ProductClass {
       this.price = price ? price : 'Под заказ';
       this.image = image;
    }
-   
+
    wrap() {
       return `
-      <!-- Product -->
-      <div class="card">
-      <a class="card-link" href="#">
-      <img src="images/${(this.image) ? this.image: 'nophoto.png'}" alt="photo product-1" class="card-img">
-      </a>
-      <div class="card-info">
-      <a href="" class="card-title">${this.title}</a>
-      <div class="card-descr"></div>
-      <div class="card-price">${this.price}
-      <img src="images/stars.png" alt="Raiting stars" class="card-stars">
-      </div>
-      </div>
-      <a href="#" class="add-to-cart">Add to Cart</a>
-      </div>
+         <!-- Product -->
+         <div class="card">
+            <a class="card-link" href="#">
+               <img src="images/${(this.image) ? this.image: 'nophoto.png'}" alt="photo product-1" class="card-img">
+            </a>
+            <div class="card-info">
+               <a href="" class="card-title">${this.title}</a>
+               <div class="card-descr"></div>
+               <div class="card-price">${this.price}
+                  <img src="images/stars.png" alt="Raiting stars" class="card-stars">
+               </div>
+            </div>
+            <a href="#" class="add-to-cart">Add to Cart</a>
+         </div>
       `;
    }
 }
@@ -96,25 +93,39 @@ class ProductGalleryClass {
       this.productList = list;
    }
    render() {
-      
+
       const productList = this.productList.map(item => new ProductClass(item).wrap());
       document.querySelector('.goods').innerHTML += productList.join('');
-      
+
    }
    getTotal() {
       return this.productList.reduce(
          (acc, curVal) => { return acc + curVal.price; }, 0);
-      }
    }
-   
-   //... Main block
-   var goods = getData("goods.json");
-   // console.log(goods);
-   const goodsList = new ProductGalleryClass(goods);
+   fetchData() {
+      return new Promise((resolve, reject) => {
+         // sendRequest('catalogData.json')
+         sendRequest('goods.json')
+         .then((data) => {
+            // this.goods = data.goods;
+            goods = data.goods;
+            this.productList = goods;
+            this.filteredGoods = data.goods;
+            resolve();
+         });
+      });
+   }
+}
+
+//... Главный блок
+const goodsList = new ProductGalleryClass();
+goodsList.fetchData()
+.then(() => {
    goodsList.render();
-   goodsList.getTotal();
-   
-   
+   goodsList.getTotal()
+});
+
+
 //
 //... Реализация корзины
 const 
@@ -132,7 +143,7 @@ class Cart {
       this.orderNo = null;
       this.orderId = null;
    }
- 
+
    render() {}
    addItem() {}
    addSelected() {}
@@ -146,8 +157,8 @@ class Cart {
    help() {}
    cancelCart() {}
    sortItems() {}
- }
- 
+}
+
 class CartItem {
    constructor(product, qty) {
       this.product = product;
