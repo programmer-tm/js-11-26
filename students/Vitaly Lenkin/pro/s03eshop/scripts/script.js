@@ -1,85 +1,3 @@
-//... Data Base
-/*
-const goods = [{
-   title: 'Ноутбук',
-   price: 30000,
-   image: "nout.webp"
-}, {
-   title: 'Клавиатура',
-   price: 1900,
-   image: "kbd01.jpg"
-}, {
-   title: 'Мышь',
-   price: 2500,
-   image: "mouse.jpeg"
-}, {
-   title: 'Монитор',
-   price: 30000,
-   image: "mon.jpg"
-}, {
-   title: 'Ноутбук',
-   price: 45000,
-   image: "nout02.png"
-}, {
-   title: 'Клавиатура',
-   price: 7000,
-   image: "kbd02.jpg"
-}, {
-   title: 'Мышь',
-   price: 700,
-   image: "mouse02.jpeg"
-}, {
-   title: 'Монитор',
-   price: 35000,
-   image: "mon02.jpg"
-}, {
-   title: 'Ноутбук',
-   price: 30000,
-   image: "nout.webp"
-}, {
-   title: 'Клавиатура',
-   price: 1000
-}, {
-   title: 'Мышь',
-   price: 500
-}, {
-   title: 'Монитор',
-}, ];
-*/
-
-// const API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
-const API = '/';
-
-const sendRequest = (path) => {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-
-    xhr.timeout = 10000;
-
-    xhr.ontimeout = () => {
-      console.log('timeout!');
-    }
-
-    xhr.onreadystatechange = () => {
-      // console.log('ready state change', xhr.readyState);
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          resolve(JSON.parse(xhr.responseText));
-        } else {
-          console.log('Error!', xhr.responseText);
-          reject(xhr.responseText);
-        }
-      }
-    }
-
-    xhr.open('GET', `${API}/${path}`);
-
-    // xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.send();
-  });
-}
-
 //
 //... Declarations
 var itemList = document.querySelector('.goods');
@@ -87,6 +5,36 @@ var filter = document.getElementById('filter');
 var user = document.getElementById('user');
 filter.addEventListener('keyup', filterItems);
 user.addEventListener('click', login);
+const API = 'https://raw.githubusercontent.com/vl-gbr/js-11-26/master/students/Vitaly%20Lenkin/pro/s03eshop/data';
+
+//... Data Base
+var goods = [];
+
+//... Классический вариант XMLHttpRequest, с промисами
+const sendRequest = (path) => {
+   return new Promise((resolve, reject) => {
+
+      const xhr = new XMLHttpRequest();
+      xhr.timeout = 10000;
+      xhr.ontimeout = () => {
+         console.log('timeout!');
+      }
+      xhr.onreadystatechange = () => {
+         // console.log('ready state change', xhr.readyState);
+         if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+               resolve(JSON.parse(xhr.response));
+            } else {
+               console.log('Error!', xhr.response);
+               reject(xhr.response);
+            }
+         }
+      }
+      xhr.open('GET', `${API}/${path}`);
+      // xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send();
+   });
+}
 
 // Filter Items
 function filterItems(e){
@@ -157,33 +105,25 @@ class ProductGalleryClass {
    fetchData() {
       return new Promise((resolve, reject) => {
          // sendRequest('catalogData.json')
-         sendRequest('data/goods.json')
+         sendRequest('goods.json')
          .then((data) => {
-            this.goods = data;
-            this.filteredGoods = data;
+            // this.goods = data.goods;
+            goods = data.goods;
+            this.productList = goods;
+            this.filteredGoods = data.goods;
             resolve();
          });
       });
    }
-  
-   newFetchData(callback) {
-      // fetch(`${API}/catalogData.json`)
-      fetch(`${API}/data/goods.json`)
-      .then((response) => {
-         console.log(response);
-         return response.json();
-      })
-      .then((data) => {
-         console.log(data);
-         this.goods = data;
-         callback();
-      });
-   }
 }
 
-const goodsList = new ProductGalleryClass.fetchData();
-goodsList.render();
-goodsList.getTotal();
+//... Главный блок
+const goodsList = new ProductGalleryClass();
+goodsList.fetchData()
+.then(() => {
+   goodsList.render();
+   goodsList.getTotal()
+});
 
 
 //
@@ -203,7 +143,7 @@ class Cart {
       this.orderNo = null;
       this.orderId = null;
    }
- 
+
    render() {}
    addItem() {}
    addSelected() {}
@@ -217,8 +157,8 @@ class Cart {
    help() {}
    cancelCart() {}
    sortItems() {}
- }
- 
+}
+
 class CartItem {
    constructor(product, qty) {
       this.product = product;
