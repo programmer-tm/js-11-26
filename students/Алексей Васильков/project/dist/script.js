@@ -1,131 +1,17 @@
 'use strict';
 
-// 1. Вынести компоненты интернет-магазина в отдельные модули и настроить сборку.
-// 2. Найти в официальной документации способ автоматически перезапускать webpack при изменении файла. Изменить скрипт build, добавив туда этот способ. Подсказка: при запуске нужно использовать определённый флаг.
+import makeGETRequest from '../request_module.js';
+import '../styles/style.scss';
+import '../catalog.json';
+import '../cart.json';
+import '../server.js';
 
-const API_URL = 'http://localhost:3000/api';
-
-const makeGETRequest = (path, method = 'GET', body = {}) => {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-
-        xhr.timeout = 5000;
-
-        xhr.ontimeout = () => {
-            console.log('Timeout!');
-        }
-
-        xhr.onreadystatechange = () => {
-            if(xhr.readyState === 4) {
-                if(xhr.status === 200) {
-                    resolve(JSON.parse(xhr.responseText));
-                } else{
-                    console.log('Error!', xhr.responseText);
-                    reject(xhr.responseText);
-                }
-            }
-        }
-
-        xhr.open(method, `${API_URL}/${path}`);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(body));
-    });
-};
-
-Vue.component('v-header', {
-    props: ['isVisibleCart'],
-    template: `
-        <header class="header center">
-            <a class="logo" href="#">E-Shop</a>
-            <slot />
-            <nav>
-            <button class="cart_button" @click="handlerClick" type="button">Корзина</button>
-            </nav>
-            <slot name="cart" />
-        </header>
-    `,
-    methods: {
-        handlerClick() {
-            this.$emit('change-is-cart-visible');
-        }
-    }
-});
-
-Vue.component('v-error', {
-    props: ['message'],
-    template: `
-        <div class="error">
-            Ошибка! {{message}}
-        </div>
-    `,
-});
-
-Vue.component('v-search', {
-    props: ['value'],
-    template: `
-        <form>
-            <input class="search" :value="value" @input="$emit('input', $event.target.value)" type="text" placeholder="Что будем искать?">
-            <button class="search_button" @click="filteredGoods()">Найти</button>
-        </form>
-    `,
-});
-
-Vue.component('v-cart', {
-    props: ['goods'],
-    template: `
-        <div class="cart_container">
-            <div class="cart_drop">
-                <div class="cart_drop__item" v-for="item in goods">
-                        <h4 class="cart_drop__item__product_name">{{item.title}}</h4>
-                        <p class="cart_drop__item__product_price">{{item.quantity}} x {{item.price}}</p>
-                        <p class="cart_drop__item__product_currency" v-html="'\u20bd'"></p>
-                        <button class="cart_drop__item__button_delete" @click="$emit('delete', item.id)">Удалить</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `,
-});
-
-Vue.component('v-goods', {
-    props: ['goods'],
-    template: `
-        <main>
-            <section class="goods container">
-                <v-item v-for="item in goods" v-bind:element="item" v-on:addToCart="handlerAddToCart" />
-                <div class="goods_empty" v-if="!goods.length">
-                    <p>Нет данных.</p>
-                    <p>Информация, по Вашему запросу, отсутствует.</p>
-                </div>
-            </section>
-        </main>
-    `,
-    methods: {
-        handlerAddToCart(data) {
-            this.$emit('add', data);
-        }
-    }
-});
-
-Vue.component('v-item', {
-    props: ['element'],
-    template: `
-        <div class="item">
-            <img class="product_img" :src="element.image" alt="product image" />
-            <h4 class="product_name">{{element.title}}</h4>
-            <div class="price_block">
-                <p class="product_price">{{element.price}}</p>
-                <p class="product_badge" v-html="'\u20bd'"></p>
-            </div>
-            <button class="buy_button" type="button" @click="addToCart(item)">Купить</button>
-        </div>
-    `,
-    methods: {
-        addToCart() {
-            this.$emit('addToCart', this.element);
-        }
-    }  
-});
+require('../v-header_component.js').init();
+require('../v-error_component.js').init();
+require('../v-search_component.js').init();
+require('../v-cart_component.js').init();
+require('../v-goods_component.js').init();
+require('../v-item_component.js').init();
 
 new Vue({
     el: '#app',
