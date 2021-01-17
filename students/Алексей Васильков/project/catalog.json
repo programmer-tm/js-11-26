@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "image": "img/nout.jpg",
+        "title": "Ноутбук",
+        "price": 60000,
+        "quantity": 1
+    },
+    {
+        "id": 2,
+        "image": "img/keyboard.jpg",
+        "title": "Клавиатура",
+        "price": 5000,
+        "quantity": 1
+    },
+    {
+        "id": 3,
+        "image": "img/mouse.jpg",
+        "title": "Мышь",
+        "price": 2000,
+        "quantity": 1
+    },
+    {
+        "id": 4,
+        "image": "img/monitor.jpg",
+        "title": "Монитор",
+        "price": 30000,
+        "quantity": 1
+    }
+]

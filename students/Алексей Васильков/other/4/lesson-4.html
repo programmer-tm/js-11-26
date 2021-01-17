@@ -1,0 +1,16 @@
+<meta charset="utf-8">
+<script type="text/javascript">
+    'use strict';
+
+    // 1. Дан большой текст, в котором для оформления прямой речи используются одинарные кавычки. Придумать шаблон, который заменяет одинарные кавычки на двойные.
+    // 2. Улучшить шаблон так, чтобы в конструкциях типа aren't одинарная кавычка не заменялась на двойную.
+
+    const text = "He said, 'I don't have much free time.' They said, 'We can't come to the party on Friday.'";
+
+    const replacement = /\B'(.+?)'\B/g;
+    const newText = text.replace(replacement, '"$1"');
+
+    alert(text);
+    alert(newText);
+
+</script>

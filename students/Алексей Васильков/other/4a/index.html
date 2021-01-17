@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма обратной связи</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="form.js" defer></script>
+</head>
+
+<body>
+    <form class="form" action="form.js" method="POST" onsubmit="return check()" name="form" id="form">
+        <div class="form_item">
+            <label for="name">Ваше имя (может состоять только из букв):</label>
+            <input class="form_item_field" type="text" placeholder="Имя" id="form_name">
+            <div class="form_error" id="input_name"></div>
+        </div>
+        <div class="form_item">
+            <label for="phone">Телефон (в формате: +7(000)000-0000):</label>
+            <input class="form_item_field" type="text" placeholder="Телефон" id="form_phone">
+            <div class="form_error" id="input_phone"></div>
+        </div>
+        <div class="form_item">
+            <label for="email">E-mail (можно использовать: . и -):</label>
+            <input class="form_item_field" type="text" placeholder="E-mail" id="form_email">
+            <div class="form_error" id="input_email"></div>
+        </div>
+        <div class="form_item">
+            <label for="textarea">Ваш текст:</label>
+            <textarea class="form_item_field" placeholder="Текст" rows="4" id="form_textarea"></textarea>
+        </div>
+        <button type="submit" value="submit">Отправить</button>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+:active,
+:hover,
+:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+
+.form {
+  margin: 30px;
+}
+
+.form .form_item_field {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 3px 0px 5px 0px;
+}
+
+.form .form_error {
+  width: 250px;
+  height: 16px;
+  position: absolute;
+  border: 1px solid red;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-top: -23px;
+  display: none;
+}
+/*# sourceMappingURL=style.css.map */
