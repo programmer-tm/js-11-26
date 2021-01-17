@@ -1,10 +1,6 @@
 'use strict';
 
 import makeGETRequest from '../request_module.js';
-import '../styles/style.scss';
-import '../catalog.json';
-import '../cart.json';
-import '../server.js';
 
 require('../v-header_component.js').init();
 require('../v-error_component.js').init();
