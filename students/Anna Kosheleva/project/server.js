@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
@@ -20,10 +22,10 @@ app.get('/api/catalog', (req, res) => {
     });
 });
 
-app.get('/api/basket', (req, res) => {
-    fs.readFile('./basket.json', 'utf-8', (err, rawData) => {
+app.get('/api/cart', (req, res) => {
+    fs.readFile('./cart.json', 'utf-8', (err, rawData) => {
         if (err) {
-            console.log('Read basket.json error!', err);
+            console.log('Read cart.json error!', err);
             res.status(500).send('Server error');
             return;
         }
@@ -31,28 +33,28 @@ app.get('/api/basket', (req, res) => {
     });
 });
 
-app.post('/api/basket', (req, res) => {
-    fs.readFile('./basket.json', 'utf-8', (err, rawData) => {
+app.post('/api/cart', (req, res) => {
+    fs.readFile('./cart.json', 'utf-8', (err, rawData) => {
         if (err) {
-            console.log('Read basket.json error!', err);
+            console.log('Read cart.json error!', err);
             res.status(500).send('Server error');
             return;
         }
 
-        const basket = JSON.parse(rawData);
+        const cart = JSON.parse(rawData);
 
         const item = req.body;
 
-        const index = basket.findIndex((basketItem) => basketItem.id === item.id);
+        const index = cart.findIndex((cartItem) => cartItem.id === item.id);
           if (index > -1) {
-            basket[index].quantity += 1;
+            cart[index].quantity += 1;
           } else {
-            basket.push({ ...item, quantity: 1 });
+            cart.push({ ...item, quantity: 1 });
           }
 
-          fs.writeFile('./basket.json', JSON.stringify(basket), (err) => {
+          fs.writeFile('./cart.json', JSON.stringify(cart), (err) => {
             if (err) {
-                console.log('Write basket.json error!', err);
+                console.log('Write cart.json error!', err);
                 res.status(500).send('Server error');
                 return;
             }
@@ -63,23 +65,23 @@ app.post('/api/basket', (req, res) => {
     });
 });
 
-app.delete('/api/basket/:id', (req, res) => {
-    fs.readFile('./basket.json', 'utf-8', (err, rawData) => {
+app.delete('/api/cart/:id', (req, res) => {
+    fs.readFile('./cart.json', 'utf-8', (err, rawData) => {
         if (err) {
             console.log('Read basket.json error!', err);
             res.status(500).send('Server error');
             return;
         }
 
-        let basket = JSON.parse(rawData);
+        let cart = JSON.parse(rawData);
 
         const id = parseInt(req.params.id);
         
-        basket = basket.filter((goodsItem) => goodsItem.id !== id);
+        cart = cart.filter((goodsItem) => goodsItem.id !== id);
 
-        fs.writeFile('./basket.json', JSON.stringify(basket), (err) => {
+        fs.writeFile('./cart.json', JSON.stringify(cart), (err) => {
             if (err) {
-                console.log('Write basket.json error!', err);
+                console.log('Write cart.json error!', err);
                 res.status(500).send('Server error');
                 return;
             }
