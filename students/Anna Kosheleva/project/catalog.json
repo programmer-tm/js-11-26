@@ -1,0 +1,33 @@
+[
+    {
+        "id": 1234512,
+        "title": "Mouse",
+        "price": 1000
+    },
+    {
+        "id": 12345465,
+        "title": "Keyboard",
+        "price": 3000
+    },
+    {
+        "id": 123454412,
+        "title": "Monitor",
+        "price": 8000
+    },
+    {
+        "id": 123467512,
+        "title": "Cabel",
+        "price": 500
+    },
+    {
+        "id": 123451902,
+        "title": "Mouse X",
+        "price": 1100
+    },
+    {
+        "id": 123458712,
+        "title": "Mouse Z",
+        "price": 1200
+    }
+
+]
